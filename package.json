@@ -1,0 +1,38 @@
+{
+  "name": "xcss-core",
+  "description": "New way of CSS.",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yshell-dev/xcss"
+  },
+  "bin": {
+    "xcss": "./run/script.js",
+    "xdev": "./source/scripts/live.sh"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://yshell.dev/xcss/funding/"
+  },
+  "scripts": {
+    "install": "node ./run/install.js",
+    "go:lint": "cd go && golangci-lint run && cd ..",
+    "go:build": "chmod +x ./source/scripts/build.sh && ./source/scripts/build.sh source",
+    "go:stats": "chmod +x ./source/scripts/stats.sh && ./source/scripts/stats.sh source"
+  },
+  "bugs": {
+    "url": "https://github.com/yshell-dev/xcss-online/issues"
+  },
+  "author": "Yshell.dev",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "homepage": "www.xcss.io",
+  "keywords": [
+    "css",
+    "xcss",
+    "styles"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "type": "module"
+}
