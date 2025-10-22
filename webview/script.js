@@ -57,8 +57,9 @@ function OutputUpdate(updateComponent = false) {
     OutputElement.setAttribute("data-live-preview-output-container-debug", String(outputState.activateDebug))
     OutputElement.setAttribute("data-live-preview-output-container-resize", String(outputState.activateResize))
     OutputElement.setAttribute("data-live-preview-output-container-preserve", String(outputState.preserveScale))
+    OutputElement.setAttribute("data-live-preview-output-container-preserve", String(outputState.preserveScale))
 
-    RootCssElement.innerText = ComponentData.rootcss;
+    RootCssElement.innerText = outputState.useProjectCss ? ComponentData.rootcss : "";
     CompCssElement.innerText = ComponentData.compcss;
 
     if (updateComponent) {
@@ -158,10 +159,11 @@ ws.onerror = function (e) {
 let currentComponentId = 0;
 ws.onmessage = function (evt) {
     const response = JSON.parse(evt.data);
+    console.log(response)
     if (response.method === 'updateState') {
         tweakIndex[response.result.key]?.apply(response.result.value);
+        OutputUpdate(false);
     } else if (response.method === 'updateComponent') {
-        console.log(response)
         try {
             if (response["id"] === currentComponentId) return;
 
