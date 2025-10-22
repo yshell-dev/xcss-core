@@ -1,1 +1,1 @@
-export default function getBinPath(): string;
+export default function getBinPath(devmode: boolean): string;

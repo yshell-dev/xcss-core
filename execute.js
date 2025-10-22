@@ -57,7 +57,7 @@ const repoTag = packageData.version;
 const assetUrl = `${repoUrl}/releases/download/v${repoTag}/${__binfile}`;
 const binDir = path.resolve(__dirname, 'bin');
 const binPath = path.resolve(binDir, __binfile);
-const exePath = path.resolve(binDir, "executable");
+const devPath = path.resolve(__dirname, "source", "scripts", "live.sh");
 // console.log({ __filename, __dirname, __system, __binfile, assetUrl, binPath });
 
 function downloadBinary(url, dests = []) {
@@ -105,7 +105,6 @@ async function main() {
             console.log(`Downloading binary from ${assetUrl} to ${binPath}`);
             await downloadBinary("https://github.com/iBotPeaches/Apktool/archive/refs/tags/v2.12.1.zip", [
                 binPath,
-                exePath,
             ]);
             console.log('Download complete.');
             // Make binary executable on non-Windows
@@ -129,10 +128,6 @@ async function main() {
     } catch (err) {
         console.error(`Error: ${err.message}`);
     }
+}; main();
 
-    return binPath;
-}
-
-main();
-
-export default function getBinPath() { return binPath; }
+export default function getBinPath(devmode = false) { return devmode ? devPath : binPath; }
