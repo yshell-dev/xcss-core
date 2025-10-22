@@ -1,6 +1,7 @@
 {
   "name": "xcss-core",
   "description": "New way of CSS.",
+  "main": "execute.js",
   "version": "0.0.0",
   "repository": {
     "type": "git",
@@ -15,7 +16,7 @@
     "url": "https://github.com/yshell-dev/xcss-core/sponsorship"
   },
   "scripts": {
-    "install": "node ./execute.js",
+    "install": "chmod +x ./execute.js && ./execute.js",
     "go:lint": "cd go && golangci-lint run && cd ..",
     "go:build": "chmod +x ./source/scripts/build.sh && ./source/scripts/build.sh source",
     "go:stats": "chmod +x ./source/scripts/stats.sh && ./source/scripts/stats.sh source"

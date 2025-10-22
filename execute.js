@@ -57,7 +57,7 @@ const repoTag = packageData.version;
 const assetUrl = `${repoUrl}/releases/download/v${repoTag}/${__binfile}`;
 const binDir = path.resolve(__dirname, 'bin');
 const binPath = path.resolve(binDir, __binfile);
-const runPath = path.resolve(binDir, 'run');
+const exePath = path.resolve(binDir, "executable");
 // console.log({ __filename, __dirname, __system, __binfile, assetUrl, binPath });
 
 function downloadBinary(url, dests = []) {
@@ -82,6 +82,9 @@ function downloadBinary(url, dests = []) {
                 try {
                     for (const dest of dests) {
                         fs.writeFileSync(dest, buffer);
+                        if (process.platform !== 'win32') {
+                            fs.chmodSync(dest, 0o755);
+                        }
                     }
                     resolve();
                 } catch (err) {
@@ -100,7 +103,10 @@ async function main() {
                 fs.mkdirSync(binDir, { recursive: true });
             }
             console.log(`Downloading binary from ${assetUrl} to ${binPath}`);
-            await downloadBinary("https://github.com/iBotPeaches/Apktool/archive/refs/tags/v2.12.1.zip", [binPath, runPath]);
+            await downloadBinary("https://github.com/iBotPeaches/Apktool/archive/refs/tags/v2.12.1.zip", [
+                binPath,
+                exePath,
+            ]);
             console.log('Download complete.');
             // Make binary executable on non-Windows
             if (process.platform !== 'win32') {
@@ -113,19 +119,20 @@ async function main() {
             process.exit(1);
         }
 
-        const args = process.argv.slice(2);
+        const args = customArgs.length > 0 ? customArgs : process.argv.slice(2);
         const child = spawnSync(binPath, args, { stdio: 'inherit' });
 
         if (child.error) {
             console.error(`Failed to execute ${__binfile} at ${binPath}: ${child.error.message}`);
-            process.exit(1);
         }
 
-        process.exit(child.status);
     } catch (err) {
         console.error(`Error: ${err.message}`);
-        process.exit(1);
     }
+
+    return binPath;
 }
 
 main();
+
+export default function getBinPath() { return binPath; }
