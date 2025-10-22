@@ -6,7 +6,7 @@ import { spawnSync } from 'child_process';
 import { getBinaryPath } from "./detect.js";
 
 // Get path of valid binary
-const binaryPath = getBinaryPath()
+const binaryPath = getBinaryPath();
 
 // Check if binary exists (safety check)
 if (!binaryPath || !existsSync(binaryPath)) {
