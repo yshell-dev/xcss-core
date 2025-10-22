@@ -1,9 +1,31 @@
 #!/usr/bin/env node
 
-import { detectCompatibleBinary } from "./detect.js";
 // import https from 'https';
 // import fs from 'fs';
 // import path from 'path';
+
+import { detectCompatibleBinary } from "./detect.js";
+
+function getDeviceInfo() {
+    const platform = navigator.platform;
+    const userAgent = navigator.userAgent;
+
+    let os = "-";
+    if (platform.startsWith("Win")) os = "Windows";
+    else if (platform.startsWith("Mac")) os = "MacOS";
+    else if (platform.startsWith("Linux")) os = "Linux";
+    else if (/Android/.test(userAgent)) os = "Android";
+    else if (/iPhone|iPad|iPod/.test(userAgent)) os = "iOS";
+
+    // Architecture guess (very rough, relies on userAgent)
+    let arch = "-";
+    if (/arm|aarch64/i.test(userAgent)) arch = "ARM";
+    else if (/x86_64|Win64|WOW64|amd64/i.test(userAgent)) arch = "x64";
+    else if (/i[3-6]86|x86/i.test(userAgent)) arch = "x86";
+
+    return { os, arch, platform, userAgent };
+}
+
 
 // // Parameters: replace as needed
 // const assetUrl = 'https://github.com/{owner}/{repo}/releases/download/{tag}/{filename}';
@@ -25,4 +47,4 @@ import { detectCompatibleBinary } from "./detect.js";
 //     console.error(`Download error: ${e.message}`);
 // });
 
-detectCompatibleBinary()
+detectCompatibleBinary();
