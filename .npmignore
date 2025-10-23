@@ -1,18 +1,6 @@
 .git
 .gitignore
 .gitmodules
-.npmignore
 
-eslint.config.mjs
-package-lock.json
-tsconfig.build.json
-
-.vscode/
-.trash/
-
-dev/
-go/
-cdn/
-node_modules/
-ts/
-bin/
+bin/** 
+source/** 

@@ -11,10 +11,6 @@
     "xcss": "./execute.js",
     "xdev": "./source/scripts/live.sh"
   },
-  "funding": {
-    "type": "individual",
-    "url": "https://github.com/yshell-dev/xcss-core/sponsorship"
-  },
   "scripts": {
     "install": "chmod +x ./execute.js && ./execute.js",
     "go:lint": "cd go && golangci-lint run && cd ..",
