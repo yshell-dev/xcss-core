@@ -118,7 +118,7 @@ async function main() {
             process.exit(1);
         }
 
-        const args = customArgs.length > 0 ? customArgs : process.argv.slice(2);
+        const args = process.argv.slice(2);
         const child = spawnSync(binPath, args, { stdio: 'inherit' });
 
         if (child.error) {
