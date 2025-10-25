@@ -13,9 +13,9 @@
   },
   "scripts": {
     "install": "chmod +x ./execute.js && ./execute.js",
-    "go:lint": "cd go && golangci-lint run && cd ..",
-    "go:build": "chmod +x ./source/scripts/build.sh && ./source/scripts/build.sh source",
-    "go:stats": "chmod +x ./source/scripts/stats.sh && ./source/scripts/stats.sh source"
+    "lint": "cd go && golangci-lint run && cd ..",
+    "build": "chmod +x ./source/scripts/build.sh && ./source/scripts/build.sh source",
+    "stats": "chmod +x ./source/scripts/stats.sh && ./source/scripts/stats.sh source"
   },
   "bugs": {
     "url": "https://github.com/yshell-dev/xcss-core/issues"
