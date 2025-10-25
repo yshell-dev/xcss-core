@@ -1,4 +1,4 @@
-name: Build and Attach Go Release Files
+name: Build and Release Executables
 
 on:
   push:
