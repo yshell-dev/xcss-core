@@ -103,9 +103,7 @@ async function main() {
                 fs.mkdirSync(binDir, { recursive: true });
             }
             console.log(`Downloading binary from ${assetUrl} to ${binPath}`);
-            await downloadBinary("https://github.com/iBotPeaches/Apktool/archive/refs/tags/v2.12.1.zip", [
-                binPath,
-            ]);
+            await downloadBinary(assetUrl, [binPath]);
             console.log('Download complete.');
             // Make binary executable on non-Windows
             if (process.platform !== 'win32') {
