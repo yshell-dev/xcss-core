@@ -98,7 +98,9 @@ function downloadBinary(url, dests = []) {
 
 async function main() {
     try {
-        if (!fs.existsSync(binPath)) {
+        const args = process.argv.slice(2);
+
+        if (!fs.existsSync(binPath) || args[0] == "upgrade") {
             if (!fs.existsSync(binDir)) {
                 fs.mkdirSync(binDir, { recursive: true });
             }
@@ -116,7 +118,6 @@ async function main() {
             process.exit(1);
         }
 
-        const args = process.argv.slice(2);
         const child = spawnSync(binPath, args, { stdio: 'inherit' });
 
         if (child.error) {

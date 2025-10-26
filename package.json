@@ -13,8 +13,8 @@
   },
   "scripts": {
     "install": "chmod +x ./execute.js && ./execute.js",
-    "lint": "cd go && golangci-lint run && cd ..",
-    "build": "cd source && chmod +x ./scripts/build.sh && ./scripts/build.sh source",
+    "lint": "cd source && golangci-lint run && cd ..",
+    "build": "cd source && chmod +x ./scripts/build.sh && ./scripts/build.sh && source",
     "stats": "chmod +x ./source/scripts/stats.sh && ./source/scripts/stats.sh source"
   },
   "bugs": {
