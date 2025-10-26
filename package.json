@@ -1,5 +1,5 @@
 {
-  "name": "xcss-test",
+  "name": "xcss-core",
   "description": "New way of CSS.",
   "main": "execute.js",
   "version": "0.0.0",
@@ -28,8 +28,5 @@
     "xcss",
     "styles"
   ],
-  "engines": {
-    "node": ">=16.0.0"
-  },
   "type": "module"
 }
