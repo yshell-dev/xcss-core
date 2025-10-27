@@ -105,9 +105,11 @@ async function main(useLatest = false) {
             if (!fs.existsSync(binDir)) {
                 fs.mkdirSync(binDir, { recursive: true });
             }
+            
             console.log(`Downloading binary from ${currentAssetUrl} to ${binPath}`);
             await downloadBinary(useLatest ? latestAssetUrl : currentAssetUrl, [binPath]);
             console.log('Download complete.');
+
             // Make binary executable on non-Windows
             if (process.platform !== 'win32') {
                 fs.chmodSync(binPath, 0o755);
