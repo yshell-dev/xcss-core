@@ -54,7 +54,8 @@ if (!repoUrl.startsWith('https://github.com/')) {
 }
 
 const repoTag = packageData.version;
-const assetUrl = `${repoUrl}/releases/download/v${repoTag}/${__binfile}`;
+const currentAssetUrl = `${repoUrl}/releases/download/v${repoTag}/${__binfile}`;
+const latestAssetUrl = `${repoUrl}/releases/download/latest/${__binfile}`;
 const binDir = path.resolve(__dirname, 'bin');
 const binPath = path.resolve(binDir, __binfile);
 const devPath = path.resolve(__dirname, "source", "scripts", "live.sh");
@@ -96,7 +97,7 @@ function downloadBinary(url, dests = []) {
 }
 
 
-async function main() {
+async function main(useLatest = false) {
     try {
         const args = process.argv.slice(2);
 
@@ -104,8 +105,8 @@ async function main() {
             if (!fs.existsSync(binDir)) {
                 fs.mkdirSync(binDir, { recursive: true });
             }
-            console.log(`Downloading binary from ${assetUrl} to ${binPath}`);
-            await downloadBinary(assetUrl, [binPath]);
+            console.log(`Downloading binary from ${currentAssetUrl} to ${binPath}`);
+            await downloadBinary(useLatest ? latestAssetUrl : currentAssetUrl, [binPath]);
             console.log('Download complete.');
             // Make binary executable on non-Windows
             if (process.platform !== 'win32') {
@@ -127,6 +128,8 @@ async function main() {
     } catch (err) {
         console.error(`Error: ${err.message}`);
     }
-}; main();
+};
+main(false);
+main(true);
 
 export default function getBinPath(devmode = false) { return devmode ? devPath : binPath; }
