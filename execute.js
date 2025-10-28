@@ -96,24 +96,19 @@ function downloadBinary(url, dests = []) {
     });
 }
 
-
-async function main(useLatest = false) {
+async function execute() {
     try {
         const args = process.argv.slice(2);
 
         if (!fs.existsSync(binPath) || args[0] == "upgrade") {
-            if (!fs.existsSync(binDir)) {
-                fs.mkdirSync(binDir, { recursive: true });
-            }
-            
-            console.log(`Downloading binary from ${currentAssetUrl} to ${binPath}`);
-            await downloadBinary(useLatest ? latestAssetUrl : currentAssetUrl, [binPath]);
-            console.log('Download complete.');
-
-            // Make binary executable on non-Windows
-            if (process.platform !== 'win32') {
-                fs.chmodSync(binPath, 0o755);
-            }
+            if (!fs.existsSync(binDir)) { fs.mkdirSync(binDir, { recursive: true }); }
+            await downloadBinary(currentAssetUrl, [binPath]);
+            if (process.platform !== 'win32') { fs.chmodSync(binPath, 0o755); }
+        }
+        if (!fs.existsSync(binPath) || args[0] == "upgrade") {
+            if (!fs.existsSync(binDir)) { fs.mkdirSync(binDir, { recursive: true }); }
+            await downloadBinary(latestAssetUrl, [binPath]);
+            if (process.platform !== 'win32') { fs.chmodSync(binPath, 0o755); }
         }
 
         if (!fs.existsSync(binPath)) {
@@ -130,8 +125,9 @@ async function main(useLatest = false) {
     } catch (err) {
         console.error(`Error: ${err.message}`);
     }
-};
-main(false);
-main(true);
+}
+execute();
 
-export default function getBinPath(devmode = false) { return devmode ? devPath : binPath; }
+export default function getBinPath(devmode = false) {
+    return devmode ? devPath : binPath;
+}
