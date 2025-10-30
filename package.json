@@ -13,8 +13,9 @@
   },
   "scripts": {
     "install": "chmod +x ./execute.js && ./execute.js",
+    "profile": "go install github.com/moderato-app/live-pprof@latest && live-pprof",
     "lint": "cd source && golangci-lint run && cd ..",
-    "build": "cd source && chmod +x ./scripts/build.sh && ./scripts/build.sh && source",
+    "build": "cd source && chmod +x ./scripts/build.sh && ./scripts/build.sh && cd ..",
     "stats": "chmod +x ./source/scripts/stats.sh && ./source/scripts/stats.sh source"
   },
   "bugs": {
