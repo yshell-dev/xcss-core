@@ -160,10 +160,10 @@ let currentComponentId = 0;
 ws.onmessage = function (evt) {
     const response = JSON.parse(evt.data);
     console.log(response)
-    if (response.method === 'updateState') {
+    if (response.method === 'sandbox-state') {
         tweakIndex[response.result.key]?.apply(response.result.value);
         OutputUpdate(false);
-    } else if (response.method === 'updateComponent') {
+    } else if (response.method === 'sandbox-view') {
         try {
             if (response["id"] === currentComponentId) return;
 
@@ -196,17 +196,17 @@ class Tweak {
         if (!this.dom_element) {
             this.dom_element = document.getElementById(this.key);
             if (this.dom_element) {
-                this.dom_element.addEventListener('change', () => { this.setState(); });
+                this.dom_element.addEventListener('change', () => { this.Update(); });
             }
         }
         return this.dom_element;
     }
 
-    getState() {
+    Initialize() {
         if (this.element) {
             ws.send(JSON.stringify({
                 jsonrpc: "2.0",
-                method: 'getState',
+                method: 'sandbox-state',
                 id: Date.now(),
                 params: {
                     key: this.key,
@@ -217,11 +217,11 @@ class Tweak {
         }
     }
 
-    setState() {
+    Update() {
         if (ws.readyState === WebSocket.OPEN && this.element) {
             ws.send(JSON.stringify({
                 jsonrpc: "2.0",
-                method: 'setState',
+                method: 'sandbox-state',
                 id: Date.now(),
                 params: {
                     key: this.key,
@@ -298,7 +298,7 @@ const tweakIndex = {}
 ws.onopen = () => {
     tweaks.forEach((tweak) => {
         tweakIndex[tweak.key] = tweak;
-        tweak.getState();
+        tweak.Initialize();
     });
 
     ws.send(JSON.stringify({
