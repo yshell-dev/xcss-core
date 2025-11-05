@@ -160,7 +160,7 @@ let currentComponentId = 0;
 ws.onmessage = function (evt) {
     const response = JSON.parse(evt.data);
     console.log(response)
-    if (response.method === 'sandbox-state') {
+    if (response.method === 'sandbox-state-set' || response.method === 'sandbox-state-init') {
         tweakIndex[response.result.key]?.apply(response.result.value);
         OutputUpdate(false);
     } else if (response.method === 'sandbox-view') {
@@ -204,24 +204,25 @@ class Tweak {
 
     Initialize() {
         if (this.element) {
-            ws.send(JSON.stringify({
+            const message = JSON.stringify({
                 jsonrpc: "2.0",
-                method: 'sandbox-state',
+                method: 'sandbox-state-init',
                 id: Date.now(),
                 params: {
                     key: this.key,
                     value: this.fallback,
                 }
-            }));
+            })
+            ws.send(message);
             this.apply();
         }
     }
 
     Update() {
         if (ws.readyState === WebSocket.OPEN && this.element) {
-            ws.send(JSON.stringify({
+            const message = JSON.stringify({
                 jsonrpc: "2.0",
-                method: 'sandbox-state',
+                method: 'sandbox-state-set',
                 id: Date.now(),
                 params: {
                     key: this.key,
@@ -229,7 +230,9 @@ class Tweak {
                         ? this.element.checked
                         : this.element.value
                 }
-            }));
+            })
+            console.log(message)
+            ws.send(message);
             this.apply();
         }
     }
@@ -303,7 +306,7 @@ ws.onopen = () => {
 
     ws.send(JSON.stringify({
         jsonrpc: "2.0",
-        method: 'updateComponent',
+        method: 'sandbox-view',
         id: Date.now(),
         params: {}
     }));
