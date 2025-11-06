@@ -63,14 +63,14 @@ function OutputUpdate(updateComponent = false) {
     CompCssElement.innerText = ComponentData.compcss;
 
     if (updateComponent) {
-        const snippet = (typeof ComponentData.staple === "string") ? ComponentData.staple : '';
+        const staple = (typeof ComponentData.staple === "string") ? ComponentData.staple : '';
         const structure = (typeof ComponentData.summon === "string" && ComponentData.summon.length) ? ComponentData.summon : "{Content}";
         const selector = (typeof ComponentData.symclass === "string" && ComponentData.symclass.length) ? ComponentData.symclass : '[N/A]';
 
-        StapleElement.innerHTML = snippet;
+        StapleElement.innerHTML = staple;
         OutputElement.innerHTML = structure;
         OutputElement.className = "_";
-        SymClassElement.innerText = selector;
+        SymClassElement.innerHTML = selector;
 
         const attributes = ComponentData.attributes
         if (typeof attributes === "object") {
@@ -159,11 +159,11 @@ ws.onerror = function (e) {
 let currentComponentId = 0;
 ws.onmessage = function (evt) {
     const response = JSON.parse(evt.data);
-    console.log(response)
     if (response.method === 'sandbox-state-set' || response.method === 'sandbox-state-init') {
         tweakIndex[response.result.key]?.apply(response.result.value);
         OutputUpdate(false);
-    } else if (response.method === 'sandbox-view') {
+    } else if (response.method === 'sandbox-view' || response.method === "sandbox-load") {
+        console.log(response)
         try {
             if (response["id"] === currentComponentId) return;
 
