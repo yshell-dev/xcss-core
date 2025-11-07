@@ -97,12 +97,14 @@ function downloadBinary(url, dests = []) {
 }
 
 export async function binUpgrade(args = []) {
-    if (!fs.existsSync(binPath) || args[0] == "upgrade") {
+    if (!fs.existsSync(binPath) || args[0] == "reinstall") {
+        console.error('Reinstalling binary.');
         if (!fs.existsSync(binDir)) { fs.mkdirSync(binDir, { recursive: true }); }
         await downloadBinary(currentAssetUrl, [binPath]);
         if (process.platform !== 'win32') { fs.chmodSync(binPath, 0o755); }
     }
     if (!fs.existsSync(binPath) || args[0] == "upgrade") {
+        console.error('Upgrading to latest binary.');
         if (!fs.existsSync(binDir)) { fs.mkdirSync(binDir, { recursive: true }); }
         await downloadBinary(latestAssetUrl, [binPath]);
         if (process.platform !== 'win32') { fs.chmodSync(binPath, 0o755); }
