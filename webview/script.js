@@ -156,14 +156,17 @@ ws.onerror = function (e) {
     console.error('WebSocket error:', e);
 };
 
+let awaitRefresh = false;
 let currentComponentId = 0;
 ws.onmessage = function (evt) {
     const response = JSON.parse(evt.data);
     if (response.method === 'sandbox-state-set' || response.method === 'sandbox-state-init') {
         tweakIndex[response.result.key]?.apply(response.result.value);
         OutputUpdate(false);
-    } else if (response.method === 'sandbox-view' || response.method === "sandbox-load") {
-        console.log(response)
+    } else if (response.method === 'sandbox-view') {
+        if (awaitRefresh) { return }
+        awaitRefresh = true;
+        setTimeout(() => awaitRefresh = false, 250)
         try {
             if (response["id"] === currentComponentId) return;
 
@@ -297,17 +300,23 @@ const tweaks = [
     }),
 ];
 
+function requstComponent() {
+    if (!awaitRefresh) {
+        ws.send(JSON.stringify({
+            jsonrpc: "2.0",
+            method: 'sandbox-view',
+            id: Date.now(),
+            params: {}
+        }));
+    }
+}
+
 const tweakIndex = {}
 ws.onopen = () => {
     tweaks.forEach((tweak) => {
         tweakIndex[tweak.key] = tweak;
         tweak.Initialize();
     });
-
-    ws.send(JSON.stringify({
-        jsonrpc: "2.0",
-        method: 'sandbox-view',
-        id: Date.now(),
-        params: {}
-    }));
+    requstComponent;
+    setInterval(requstComponent, 1000)
 };
