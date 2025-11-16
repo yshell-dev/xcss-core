@@ -260,14 +260,14 @@ The classes defined in this file are accessed from other files using the followi
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<!-- style -->
+	<!--- style --->
 </head>
 ```
-- `<!-- style -->`, a reserved comment tag, which will be replaced by compiled stylesheet.
+- `<!--- style --->`, a reserved comment tag, which will be replaced by compiled stylesheet.
 
 ```html
 <body 
-class="~bg$pattern =bg$pattern" 
+class="~bg$pattern" 
 bg$pattern="
 	@--assign bg$pattern-checkerboard d-flex justify-center align-center;
 	min-width: 100vw;
@@ -359,12 +359,12 @@ bg$pattern="
 - Symbolic classes can  defined anywhere and used where-ever within the provided scope.
 
 ```html
-	<!-- staple -->
+	<!--- staple --->
 </body>
 
 </html>
 ```
-- `<!-- staple -->` the custom self closing tag will be replaced with, staple content of tracked dependencies.
+- `<!--- staple --->` the custom self closing tag will be replaced with, staple content of tracked dependencies.
 ## Output
 - At time of render the nested blocks are reorganized in following order.
 	- Native properties.(define and use variables).
@@ -475,7 +475,7 @@ bg$pattern="
 
 <body data-sveltekit-preload-data="hover" class="_8h">
 
-	<div class="_8i glass-type" data-glass-type='liquid'>
+	<div class="_8i" data-glass-type='liquid'>
 		Liquid Glass
 	</div>
 
@@ -579,10 +579,10 @@ body[data-loading] .$class {}
 - This tag is considered special case, as it is an existing standard for writing  CSS content with in markup.
 - If a symbolic-class is found as attribute, the content between tags is considered bound to it.
 ---
-### `<staple />` / `<!-- staple -->`
+### `<staple />` / `<!--- staple --->`
 - Acts as a placeholder for injecting attached `staple-snippets` into the compiled output.
 ---
-### `<summon />` /  `<!-- summon -->`
+### `<summon />` /  `<!--- summon --->` / `<style />` /  `<!--- style --->`
 - Intended for rapid prototyping.
 - Used as a placeholder for deploying alongside `stylesheet` and `staple-snippets` in the compiled output.
 - Not recommended for production use due to potential instability or lack of semantic clarity.

@@ -2,7 +2,7 @@
   "name": "xcss-core",
   "description": "New way of CSS.",
   "main": "execute.js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/yshell-dev/xcss-core"
