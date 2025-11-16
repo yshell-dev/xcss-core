@@ -1,3 +1,5 @@
+# Terms & Conditions
+
 **Effective Date:** March 21, 2025
 
 These Terms and Conditions ("T&C") govern your interaction with the XCSS (Xtensible Cascading Style Sheet) platform and services provided by XPKTR Labs ("We," "Us," "Our"). By accessing or using XCSS, including its website (xcss.xpktr.com), console, or related services, you ("You," "User") agree to these T&C and the accompanying XPKTR Labs License for XCSS (Version 1.0, 2025) ("License").

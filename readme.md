@@ -1,22 +1,58 @@
-# Introduction
+# Documentation
 
-**XCSS** is a **Constraint-driven CSS-Build-time** which takes an opinionated diversions from vanilla CSS, while preserving the raw flexibility, additionally dependency resolution. 
+**XCSS** is a **constraint-driven CSS build-time tool** that takes an opinionated yet flexible approach diverging from vanilla CSS, while preserving raw flexibility and adding powerful dependency resolution.
 
-- **Framework agnostic**
-	Works with any text-based environment—no coupling to specific frameworks or tooling.
+- **Framework Agnostic**  
+  Works seamlessly in any text-based environment—no ties to specific frameworks or tooling.  
 - **Design System Compatible**  
-	Integrates cleanly with existing design systems, tokens, and component libraries—no rewrites, just augmentation.
-- **Constraint-Based Syntax**
-	Write styles within logical boundaries, enabling predictable behavior and modular reuse.
-- **Native Dependency Management**
-	Automatically resolves cascading order and inter-style dependencies, reducing manual overrides and conflicts.
-- **Reusable Blocks**
-	Compose styles as modular units that grow with your app—no tangled selectors or brittle overrides.
-- **Production-Ready Optimization**
-	Ships debloated, dependency-aware styles for faster, cleaner builds.
+  Integrates effortlessly with existing design systems, tokens, and component libraries—no rewrites needed, just augmentation.  
+- **Constraint-Based Syntax**  
+  Write styles within logical boundaries to enable predictable behavior and modular reuse.  
+- **Native Dependency Management**  
+  Automatically resolves cascading order and style dependencies, minimizing manual overrides and conflicts.  
+- **Reusable Blocks**  
+  Compose modular style blocks that grow with your app—no tangled selectors or brittle overrides.  
+- **Production-Ready Optimization**  
+  Delivers debloated, dependency-aware styles for faster, cleaner builds.
 
----
-# Command Line
+## Do We Need Another CSS Framework?
+
+XCSS is not just another CSS framework loaded with predefined classes—you can start using XCSS without any classes at all and achieve rapid development pacing.  
+
+You can easily customize your own framework with as much ease as writing a few CSS files. XCSS acts as a structural CSS abstraction that reduces context switching between CSS and HTML, improving portability.
+
+Its unique design patterns may feel unconventional at first, but the benefits are clear—resulting in lighter, unbloated HTML, less styling logic in JS, and finely tuned stylesheet tailored specifically for your projects.
+
+## Sections
+
+1. [Intoductiton](./1-introduction.md)
+2. [Directory](./2-directory.md)
+3. [Example](./3-example.md)
+4. [Syntax](./4-syntax.md)
+5. [Appendix](./5-appendix.md)
+
+# 0. Installation
+
+## Global
+```text
+npm install -g xcss-core
+```
+
+Run commands directly using:
+```text
+xcss {command}
+```
+
+## Local
+```text
+npm install --save-dev xcss-core
+```
+
+Run commands locally with:
+```text
+npm run xcss {command}
+```
+# 1. Command Line
 
 - `init`
 	- Sets up the project by importing the configuration folder, and makes necessary changes to `configure.jsonc`.
@@ -40,6 +76,8 @@
 	- Executes only if no compilation errors are present
 	- Falls back to the `preview` build if conditions aren't met
 	- **Recommended for production-grade enterprise deployments**
+# 2. Directory
+
 # Setup folder
 ```
     xtyles/
@@ -210,7 +248,7 @@ The classes defined in this file are accessed from other files using the followi
 - In a file of **Order `n`**, symbolic classes may be referenced from other files using two distinct directives, with in the scope of whole `axiom` and `cluster` were permitted sources are:
 	-  `@--assign`: Files of **Order ≤ n−1**
 	-  `@--attach`: Files of **Order ≤ n**
-# Quick-start Preview
+# 3. Example
 
 ## Input
 - The following is fragmented preview of input to output compilation.
@@ -264,7 +302,7 @@ bg$pattern="
 -  `<staple ... > ... </staple>` a special tag used to create a **dependency to text-block with a symclass**. The content with-in the tag will be only deployed if the corresponding symclass is used compiled CSS.
 
 ```html
-	\<summon style="
+	<summon style="
 		background-image: linear-gradient(#ffffff 0.9px, transparent 0.9px), linear-gradient(to right, #ffffff 0.9px, #cacaca 1px);
 		background-size: 18px 18px;
 	" 
@@ -308,7 +346,7 @@ bg$pattern="
 	>Test</summon>
 ```
 - `<summon ... > ... </summon>`, a special tag which lets you create portable template for component level **symclasses**, which can be used for preview in a live sand-boxed environment while using language server. 
-- @--attach / ~` can be used to add a dependency attachment of a symbolic class. These will be used for dependency tracking.
+- `@--attach` / `~` can be used to add a dependency attachment of a symbolic class. These will be used for dependency tracking.
 - Use `&` attribute to write comment, which can be used multiple times in the same tag. 
 
 ```html
@@ -458,7 +496,7 @@ bg$pattern="
 
 </html>
 ```
-# Syntax
+# 4. Syntax
 
 ## Symbolic-Class 
 
@@ -562,8 +600,7 @@ body[data-loading] .$class {}
 - In **style blocks**, It functions as a symbolic operand, serving as a concise representation of designated special directives.
 	- `=` = `@--assign`
 	- `~` = `@--attach`
-# Appendix
-
+# 5. Appendix
 
 ## Errors & diagnostics
 

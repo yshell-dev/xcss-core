@@ -1,3 +1,5 @@
+# Privacy Policy
+
 **Effective Date:** March 20, 2025
 
 XPKTR Labs ("We," "Us") respects your privacy while providing XCSS (Xtensible Cascading Style Sheet). This Privacy Policy explains how we collect, use, and protect your data.
