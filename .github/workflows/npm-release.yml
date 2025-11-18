@@ -5,8 +5,6 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
-  repository_dispatch:
-    types: [trigger-publish]
   workflow_dispatch:
 
 jobs:
@@ -38,3 +36,23 @@ jobs:
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.XCSS_NPM_TOKEN }}
+
+  publish-bin:
+    name: Bin Publish Trigger
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_REPO: yshell-dev/xcss-source
+
+    steps:
+      - name: Checkout xcss-source (read-only)
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ env.SOURCE_REPO }}
+          token: ${{ secrets.XCSS_REPO_CROSS }}
+
+      - name: Trigger publish workflow on Parent Repo
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          repository: ${{ env.SOURCE_REPO }}
+          token: ${{ secrets.XCSS_REPO_CROSS }}
+          event-type: trigger-publish
