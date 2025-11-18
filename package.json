@@ -1,6 +1,6 @@
 {
   "name": "xcss-core",
-  "description": "New way of CSS.",
+  "description": "The way of Semantic CSS.",
   "main": "execute.js",
   "version": "0.0.5",
   "repository": {
