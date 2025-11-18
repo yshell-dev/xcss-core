@@ -62,22 +62,34 @@ const devPath = path.resolve(__dirname, "source", "scripts", "live.sh");
 // console.log({ __filename, __dirname, __system, __binfile, assetUrl, binPath });
 
 function downloadBinary(url, dests = []) {
+    console.log("Source: " + url);
     return new Promise((resolve, reject) => {
-        https.get(url, (res) => {
-            if (res.statusCode === 302 && res.headers.location) {
-                // Follow redirect to actual file location
-                downloadBinary(res.headers.location, dests).then(resolve).catch(reject);
+        let parsedUrl;
+        try {
+            parsedUrl = new URL(url);
+        } catch (err) {
+            reject(new Error("Invalid URL: " + url));
+            return;
+        }
+
+        https.get(parsedUrl, (res) => {
+            const { statusCode, headers } = res;
+            if ([301, 302, 307, 308].includes(statusCode) && headers.location) {
+                // Follow redirect
+                downloadBinary(headers.location, dests).then(resolve).catch(reject);
+                res.destroy();
                 return;
             }
-            if (res.statusCode !== 200) {
-                reject(new Error(`Unexpected status code: ${res.statusCode}`));
+
+            if (statusCode !== 200) {
+                res.resume(); // Consume response data to free up memory
+                reject(new Error(`Request Failed. Status Code: ${statusCode}`));
                 return;
             }
 
             const dataChunks = [];
-            res.on('data', chunk => dataChunks.push(chunk));
             res.on('error', reject);
-
+            res.on('data', chunk => dataChunks.push(chunk));
             res.on('end', () => {
                 const buffer = Buffer.concat(dataChunks);
                 try {
@@ -97,20 +109,35 @@ function downloadBinary(url, dests = []) {
 }
 
 export async function binUpgrade(args = []) {
-    if (!fs.existsSync(binPath) || args[0] == "reinstall") {
+    const fallbackAssetUrl = latestAssetUrl
+    if (!fs.existsSync(binPath) || args[0] === "reinstall") {
         console.error('Reinstalling binary.');
-        if (!fs.existsSync(binDir)) { fs.mkdirSync(binDir, { recursive: true }); }
-        await downloadBinary(currentAssetUrl, [binPath]);
-        if (process.platform !== 'win32') { fs.chmodSync(binPath, 0o755); }
+        if (!fs.existsSync(binDir)) {
+            fs.mkdirSync(binDir, { recursive: true });
+        }
+        try {
+            await downloadBinary(currentAssetUrl, [binPath]);
+        } catch (error) {
+            console.error(`Failed to download from first URL: ${error.message}`);
+            console.error('Trying second binary URL...');
+            // Attempt to download from a fallback URL (assumed here as fallbackAssetUrl)
+            await downloadBinary(fallbackAssetUrl, [binPath]);
+        }
+        if (process.platform !== 'win32') {
+            fs.chmodSync(binPath, 0o755);
+        }
     }
-    if (!fs.existsSync(binPath) || args[0] == "upgrade") {
+    if (!fs.existsSync(binPath) || args[0] === "upgrade") {
         console.error('Upgrading to latest binary.');
-        if (!fs.existsSync(binDir)) { fs.mkdirSync(binDir, { recursive: true }); }
+        if (!fs.existsSync(binDir)) {
+            fs.mkdirSync(binDir, { recursive: true });
+        }
         await downloadBinary(latestAssetUrl, [binPath]);
-        if (process.platform !== 'win32') { fs.chmodSync(binPath, 0o755); }
+        if (process.platform !== 'win32') {
+            fs.chmodSync(binPath, 0o755);
+        }
     }
 }
-
 
 (async () => {
     try {

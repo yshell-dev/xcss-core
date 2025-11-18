@@ -27,10 +27,10 @@ You may not:
 ## 5. Community and Contributions
 
 During the preview period, you are encouraged to:
-- Share your feedback, ideas, and sample projects by opening issues or discussions at github.com/yshell-dev/xcss-package.
+- Share your feedback, ideas, and sample projects by opening issues or discussions at github.com/yshell-dev/xcss-core.
 - Experiment with integrating XCSS into your own projects and showcase your results.
 - Direct source contributions to xcss-core are not expected at this stage.
-- If you wish, you can fork the xcss-core repository to create your own variants or flavors from github.com/yshell-dev/xcss-package.
+- If you wish, you can fork the xcss-core repository to create your own variants or flavors from github.com/yshell-dev/xcss-core.
 
 ## 6. Tools Powered by XCSS
 

@@ -7,3 +7,5 @@ bin
 source
 bin/** 
 source/** 
+
+release.md
