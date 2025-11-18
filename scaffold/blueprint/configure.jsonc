@@ -14,5 +14,18 @@
       }
     }
   ],
+  "tweaks": {
+    "staple-prefix": "<div style=\"display: none;\">",
+    // prefix for staple replacement tags 
+    "staple-suffix": "</div>",
+    // suffix for staple replacement tags 
+    "styles-prefix": "<style>",
+    // prefix for styles replacement tags 
+    "styles-suffix": "</style>",
+    // suffix for styles replacement tags 
+    // EXPERIMENTAL
+    "reload-period": 0
+    // rebuild interval in seconds, (>= 10s)
+  },
   "environment": "browser"
 }
