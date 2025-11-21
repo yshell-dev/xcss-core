@@ -4,6 +4,7 @@
   "version": "0.0.7",
   "main": "execute.js",
   "exports": "./execute.js",
+  "typings": "execute.d.ts",
   "type": "module",
   "bin": {
     "xcss": "./execute.js",
@@ -46,9 +47,21 @@
     "node": ">=14.0.0"
   },
   "files": [
+    "scaffold/**/*",
+    "webview/**/*",
+    ".gitmodules",
+    ".gitignore",
+    ".npmignore",
+    "alerts.md",
+    "changelog.md",
+    "execute.d.ts",
     "execute.js",
-    "source/**/*",
-    "LICENSE.md",
-    "README.md"
+    "license.md",
+    "package.json",
+    "privacy.md",
+    "prompt.md",
+    "readme.md",
+    "release.md",
+    "terms.md"
   ]
 }

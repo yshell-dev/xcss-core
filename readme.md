@@ -74,7 +74,7 @@ npm run xcss {command}
 	- Verbose output
 	- Traceable class-names and properties.
 	- Larger output size
-	- Use `debug -w for live compilation with identical output.
+	- Use `debug -w` for live compilation with identical output.
 
 - `preview` : Optimized compilation for lightweight builds:
 	- Hashed class-names (≥ 3 characters)
@@ -106,19 +106,19 @@ npm run xcss {command}
 - `<!-- style -->`, a reserved comment tag, which will be replaced by compiled stylesheet.
 
 ```html
+
 <body 
-class="=bg$pattern" 
-bg$pattern="
-	@--assign bg$pattern-checkerboard d-flex justify-center align-center;
-	min-width: 100vw;
-	min-height: 100vh;
+data-sveltekit-preload-data="hover" 
+class="=bg$pattern-checkerboard =$custom-pattern" 
+_$custom-pattern="
+	--pattern-checker-bg1: #456734;
+	--pattern-checker-bg2: #2bb43d;
+	--pattern-checker-size: var(---delta-block-lg);
 "
 {@media (min-width:512px)}&="
 	--pattern-checker-bg1: var(---primary-100);
 	--pattern-checker-bg2: var(---secondary-900);
-"
-&="This is a comment"
->
+">
 ```
 
 - You can compose classes with in html tags with attribute representing **symbolic classes (symclasses)** `bg$pattern`, and attribute which ends with `&` is considered **wrappers** for the symbolic class.
@@ -127,10 +127,10 @@ bg$pattern="
 - To use a symbolic class use `={sym-class}` with in attributes. 
 
 ```html
-	<staple glass$--container>
-		<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+	<staple amorphous$--container>
+		<svg xmlns="http://www.w3.org/2000/svg">
 			<defs>
-				<filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%">
+				<filter id="<!#>glass-distortion" x="0%" y="0%" width="100%" height="100%">
 					<feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92"
 						result="noise" />
 					<feGaussianBlur in="noise" stdDeviation="2" result="blurred" />
@@ -146,37 +146,36 @@ bg$pattern="
 
 ```html
 	<summon style="
-		background-image: linear-gradient(#ffffff 0.9px, transparent 0.9px), linear-gradient(to right, #ffffff 0.9px, #cacaca 1px);
 		background-size: 18px 18px;
-	" 
-	data-glass-type="frosted" 
-	glass$$container="
-		~ glass$--container;
-		= p-24 m-0 border-0 radius-16 d-flex align-center justify-center position-fixed;
-		= tx$decoration-none cursor-pointer bg$none tx$size-h1 isolate an$transition-all;
-		box-shadow: 0px 6px 12px -6px #77777777;
-		&:hover { = tf$scale-125; }
+		background-image: linear-gradient(#ffffff 0.9px, transparent 0.9px), 
+			linear-gradient(to right, oklab(100% 0 -0.00011) 0.9px, #cacaca 1px);
+	" data-glass-type="liquid" amorphous$$$container="
+		~ amorphous$--container;
+		= p-24 m-0 border-0 d-flex align-center justify-center position-fixed
+			= tx$decoration-none border-dotted cursor-pointer tx$size-h1;
+		= isolate an$transition-all an$animation-delay-500;
+		animation: .5s fade-in forwards;
+		&:hover {
+			= tf$scale-105;
+		}
 		&::after {
 			= position-absolute inset-0 layer-neg-2 radius-16 tx$content-clear;
-			filter: url(#glass-distortion);
+			filter: url(#<!#>glass-distortion);
 		}
 		&::before {
 			= position-absolute inset-0 layer-neg-1 radius-16 tx$content-clear;
-			box-shadow: inset 0 0 15px -5px #00000044;
+			box-shadow: inset 0 0 15px -5px #ffffffec;
 		}
-		&.glass-type {
-			&[data-glass-type='frosted'] {
-				&::after { backdrop-filter: blur(1px); }
-				&::before { background-color: rgba(255, 255, 255, 0.6); }
-			}
-			&[data-glass-type='liquid'] {
-				&::after { backdrop-filter: blur(.5px); }
-				&::before { background-color: rgba(255, 255, 255, 0.25); }
-			}
+		&[data-glass-type='frosted'] {
+			&::after { backdrop-filter: blur(1px); }
+			&::before { background-color: lab(93.8 1 -5.7 / 0.713); }
 		}
-	" 
-	>
-		Template 
+		&[data-glass-type='liquid'] {
+			&::after { backdrop-filter: blur(.5px); }
+			&::before { background-color: #e7fffa73; }
+		}
+	">
+		Template
 	</summon>
 ```
 
@@ -184,18 +183,13 @@ bg$pattern="
 - `@--attach` / `~` can be used to add a dependency attachment of a symbolic class. These will be used for dependency tracking.
 
 ```html
-	<div data-glass-type='liquid' class="=glass$$container">
-		Content
-	</div>
+	<div data-glass-type='liquid' class="~amorphous$$$container"> Content </div>
 ```
 - Symbolic classes can  defined anywhere and used where-ever within the provided scope.
 
 ```html
-	<div style="visibility: hidden;">
-		<!-- staple -->
-	 </div>
+	<!-- staple -->
 </body>
-
 </html>
 ```
 - `<!-- staple -->` a reserved tag which will be replaced with staple content of tracked dependencies.
@@ -398,7 +392,7 @@ bg$pattern="
 	    Stylesheet appended to the final compiled output. Located within the target directory.
 	- **`extensions`**  
 	    Maps file types to attributes where symbolic classes will be injected.  
-	    Example: `"html": ["class"]` targets HTML files and binds symbolic classes to the `class` attribute.
+	    Example: `"html": ["class"]` targets HTML files and assist merge tooltip via extention for given attributes.
 
 ### ./hashrules.jsonc
 
@@ -559,8 +553,10 @@ All the first order blocks of each file will have a corresponding symbolic class
 <div class="
 	~atomic$class-1 
 	=component$class-1
-	~atomic$class-2 
-	~atomic$class-3 
+	~atomic$class-2
+	~atomic$class-3
+	!final$class-1
+	!final$class-2
 	=component$class-2
 ">Content</div>
 ```
@@ -570,16 +566,21 @@ All the first order blocks of each file will have a corresponding symbolic class
 - Two kinds of assignments:
   - **Rapid Assign** (`~`): Classes applied with this operator do not provide fine control over CSS cascading. Deep chaining or complex component classes might not cascade correctly using this.
   - **Rigid Assign** (`=`): Classes applied with this operator allow strict control over cascading order. These classes will always follow after all rapid classes in the final cascading order.
+  - **Final Assign** (`!`): Classes applied with this operator comes after rigid assignments but does't provide explicit control over cascading over.
 
 - Output cascading of the provided example may follow order: 
 ```
 [
-	// Order of rapid assigned classes are unpredictable
+	// Order of rapid classes have unpredictable cascading order
 	atomic$class-2,
 	atomic$class-1,
 	atomic$class-3,
 
-	// Rigd classes come after rapid classes and strictly follow cascade order 
+	// Rigid classes come after rapid classes and strictly follow cascade order 
+	component$class-1,
+	component$class-2,
+
+	// Final classes come after rigid classes and have unpredictable cascading order 
 	component$class-1,
 	component$class-2,
 ]
@@ -605,18 +606,18 @@ All the first order blocks of each file will have a corresponding symbolic class
 - Both operators produce the same final CSS output. They coexist mainly for developer convenience and clarity.
 
 
-## Lodash Operator (For Importing Unique hash of files)
+## Load Hash Operator (For Importing Unique hash of files)
 
 - This operator is designed to be used together with Lodash-tag, allowing direct access to the unique ID when needed.
 
 ### Input
 ```html
-<div class="class-1" id="_id">
+<div class="class-1 #custom-class" id="#id">
 ```
 
 ### Output
 ```html
-<div class="class-1" id="_8r-23_id">
+<div class="class-1 _8r-23_custom-class" id="_8r-23_id">
 ```
 # 6. Inline Composition
 
@@ -726,11 +727,10 @@ body[data-loading] .$class { ... }
   - Rigid Classes: `_H9`, `_8h`
 # 7. Custom HTML Tags
 
-## Special Tags
+## Declaration Tags (Paired Tags)
+
 - If a symbolic-class is found as attribute with in special tags, the content between tags is considered bound to it.
 - Paired tags are collapsed, and self closing tags are replaced with proper value while compiling.
-
-### Sym-Class Declaration Tags (Paired Tags)
 
 ```html 
 <style local$-class>
@@ -755,40 +755,104 @@ body[data-loading] .$class { ... }
 </summon>
 ```
 
-#### `<style> ... </style>` 
+### `<style> ... </style>` 
 - This tag is a special case, as it’s the standard HTML tag for writing CSS content inside markup.
 - If a sym-class is found in the opening tag, the content between tags is considered a dependent snippet of that corresponding sym-class.
 - Declared using a sym-class where - immediately follows the final $ (e.g., style$-class-name).
 
-#### `<staple> ... </staple>`
+### `<staple> ... </staple>`
 - Snippets are imported in a minified form but remain unprocessed.
 - Useful for direct association without transformation or validation.
 - Declared using a sym-class where -- immediately follows the final $ (e.g., staple$--class-name).
 
-#### `<summon> ... </summon>`
+### `<summon> ... </summon>`
 - Used to declare component-level styles and generate corresponding style templates.
 - The snippet inside these tags is used for live preview of the given classes.
 - Style attributes are passed to the sandbox body, while other attributes are passed directly to the preview sandbox.
 
-### Replacement Placeholders (Self-Closing Tags)
+## Replacement Placeholders (Self-Closing Tags && Reserved HTML Comments)
 
-##### `<summon />` /  `<!-- summon -->` 
+```html
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!-- style -->
+</head>
+
+<body 
+data-sveltekit-preload-data="hover" 
+class="=bg$pattern-checkerboard =$custom-pattern" 
+_$custom-pattern="
+	--pattern-checker-bg1: #456734;
+	--pattern-checker-bg2: #2bb43d;
+	--pattern-checker-size: var(---delta-block-lg);
+">
+
+	<staple amorphous$--container>
+		<svg xmlns="http://www.w3.org/2000/svg">
+			<defs>
+				<filter id="<!#>glass-distortion" x="0%" y="0%" width="100%" height="100%">
+                    <!-- Use of lodash tag with in staple block -->
+					<feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92"
+						result="noise" />
+					<feGaussianBlur in="noise" stdDeviation="2" result="blurred" />
+					<feDisplacementMap in="SourceGraphic" in2="blurred" scale="77" xChannelSelector="R"
+						yChannelSelector="G" />
+				</filter>
+			</defs>
+		</svg>
+	</staple>
+
+
+	<summon data-glass-type="liquid" amorphous$$$container="
+		~ amorphous$--container;
+		&::after {
+			filter: url(#<!#>glass-distortion); // Use of lodash tag
+		}
+	">
+		Template
+	</summon>
+
+	<div id="#scoped-id" data-glass-type='liquid' class="~amorphous$$$container"> Content </div>
+    <!-- Unique id with in file -->
+    <script>
+        const id = "<!#>scoped-id"
+    </script> 
+	<!-- staple -->
+</body>
+
+</html>
+```
+
+### `<summon />` /  `<!-- summon -->` 
 
 - Used as a placeholder for deploying `stylesheet` and `staple-snippets` together in the compiled output.
 - Intended for rapid prototyping, not recommended for production use.
 
-##### `<style />` /  `<!-- style -->`
+### `<style />` /  `<!-- style -->`
 
 - Embed stylesheet using these tags with in any targeted files. 
 
-##### `<staple />` / `<!-- staple -->`
+### `<staple />` / `<!-- staple -->`
 
 - Acts as a placeholder for injecting attached `staple-snippets` into the compiled output.
 
-##### Lodash Tag | `<!--_-->`
+## Operator Tags
 
+- These tags can be used to import values, if value has to be imported not with in a tag.
+
+### Import Hash | `<!#>`
 - Injects hash of files at position.
-- Shouldn't be used with a tag.
+- if you want to acces file hash with in compose tag attribute values you should use this.
+
+### Import Rapid Class | `<!~sym-class>`
+- Import equilalent class from cascade group of rapid classes.
+
+### Import Rigid Class | `<!=sym-class>`
+- Import equilalent class from cascade group of final classes.
 # 8. Appendix
 
 ## Errors & diagnostics
