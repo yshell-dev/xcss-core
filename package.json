@@ -1,19 +1,13 @@
 {
   "name": "xcss-core",
-  "description": "The way of Semantic CSS.",
-  "main": "execute.js",
+  "description": "A powerful CSS kernel for building customized, scalable, and high-performance frontend frameworks. Seamlessly blend the raw potential of CSS with the ease of pre-made utilities, managed by a core orchestrator that optimizes HTML and JavaScript performance for modern web applications.",
   "version": "0.0.7",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yshell-dev/xcss-package"
-  },
+  "main": "execute.js",
+  "exports": "./execute.js",
+  "type": "module",
   "bin": {
     "xcss": "./execute.js",
     "xdev": "./source/scripts/live.sh"
-  },
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/yshell-dev"
   },
   "scripts": {
     "install": "chmod +x ./execute.js && ./execute.js",
@@ -22,16 +16,39 @@
     "build": "cd source && chmod +x ./scripts/build.sh && ./scripts/build.sh && cd ..",
     "stats": "chmod +x ./source/scripts/stats.sh && ./source/scripts/stats.sh source"
   },
-  "bugs": {
-    "url": "https://github.com/yshell-dev/xcss-package/issues"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yshell-dev/xcss-package"
   },
-  "author": "Yshell.dev",
-  "license": "SEE LICENSE IN LICENSE.md",
-  "homepage": "www.xcss.io",
   "keywords": [
     "css",
     "xcss",
-    "styles"
+    "styles",
+    "semantic",
+    "frontend",
+    "design",
+    "framework"
   ],
-  "type": "module"
+  "author": {
+    "name": "Vyshnav Prasad",
+    "url": "https://www.yshell.dev"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "homepage": "https://www.xcss.io",
+  "bugs": {
+    "url": "https://github.com/yshell-dev/xcss-package/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/yshell-dev"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "execute.js",
+    "source/**/*",
+    "LICENSE.md",
+    "README.md"
+  ]
 }
