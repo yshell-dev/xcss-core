@@ -13,23 +13,27 @@
 - **Reusable Blocks**  
   Compose modular style blocks that grow with your app—no tangled selectors or brittle overrides.  
 - **Production-Ready Optimization**  
-  Delivers debloated, dependency-aware styles for faster, cleaner builds.
+  Delivers unblotted, dependency-aware styles for faster, cleaner builds.
 
 ## Do We Need Another CSS Framework?
 
-XCSS is not just another CSS framework loaded with predefined classes—you can start using XCSS without any classes at all and achieve rapid development pacing.  
+XCSS is not yet another CSS framework loaded with predefined classes—you can start using XCSS without any classes at all and achieve rapid development pacing.  
 
 You can easily customize your own framework with as much ease as writing a few CSS files. XCSS acts as a structural CSS abstraction that reduces context switching between CSS and HTML, improving portability.
 
-Its unique design patterns may feel unconventional at first, but the benefits are clear—resulting in lighter, unbloated HTML, less styling logic in JS, and finely tuned stylesheet tailored specifically for your projects.
+Its unique design patterns may feel unconventional at first, but the benefits are clear—resulting in lighter, unblotted HTML, less styling logic in JS, and finely tuned stylesheet tailored specifically for your projects.
 
 ## Sections
 
-1. [Intoductiton](./1-introduction.md)
-2. [Directory](./2-directory.md)
-3. [Example](./3-example.md)
-4. [Syntax](./4-syntax.md)
-5. [Appendix](./5-appendix.md)
+0. [Installation](documentation/0-installation)
+1. [Command Line](documentation/1-command)
+2. [Example Preview](documentation/2-example)
+3. [Directory](documentation/3-directory)
+4. [Composing Libraries](documentation/4-libraries)
+5. [Operators](documentation/5-operators)
+6. [Inline Composition](documentation/6-composing)
+7. [Custom HTML Tags](documentation/7-custom-tags)
+8. [Appendix](documentation/8-appendix)
 
 # 0. Installation
 
@@ -599,6 +603,21 @@ All the first order blocks of each file will have a corresponding symbolic class
   - `=` maps to `@--assign`
   - `~` maps to `@--attach`
 - Both operators produce the same final CSS output. They coexist mainly for developer convenience and clarity.
+
+
+## Lodash Operator (For Importing Unique hash of files)
+
+- This operator is designed to be used together with Lodash-tag, allowing direct access to the unique ID when needed.
+
+### Input
+```html
+<div class="class-1" id="_id">
+```
+
+### Output
+```html
+<div class="class-1" id="_8r-23_id">
+```
 # 6. Inline Composition
 
 ## Symbolic-Class 
@@ -765,6 +784,11 @@ body[data-loading] .$class { ... }
 ##### `<staple />` / `<!-- staple -->`
 
 - Acts as a placeholder for injecting attached `staple-snippets` into the compiled output.
+
+##### Lodash Tag | `<!--_-->`
+
+- Injects hash of files at position.
+- Shouldn't be used with a tag.
 # 8. Appendix
 
 ## Errors & diagnostics
