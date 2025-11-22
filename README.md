@@ -548,20 +548,6 @@ All the first order blocks of each file will have a corresponding symbolic class
 
 ## Assign Operators (For Using Sym-Classes)
 
-```HTML
-<div class="
-	~atomic$class-1 
-	!order$class-3
-	~atomic$class-2
-	~atomic$class-3
-	!order$class-1
-	!order$class-2
-	=final$class-2
-	=final$class-3
-	=final$class-1
-">Content</div>
-```
-
 - These operators signal the use of symbolic classes (sym-classes) in class attributes.
 
 - They distinguish sym-classes from regular classes used by other styling systems, allowing simultaneous use without conflicts.
@@ -580,6 +566,22 @@ All the first order blocks of each file will have a corresponding symbolic class
 
 - Output cascading of the provided example may follow order: 
 
+### Input
+```HTML
+<div class="
+	~atomic$class-1 
+	!order$class-3
+	~atomic$class-2
+	~atomic$class-3
+	!order$class-1
+	!order$class-2
+	=final$class-2
+	=final$class-3
+	=final$class-1
+">Content</div>
+```
+
+### Output
 ```
 [
 	// Scattered classes have unpredictable cascading order.
@@ -599,7 +601,41 @@ All the first order blocks of each file will have a corresponding symbolic class
 ]
 ```
 
-## Compose Operators (For composing sym-classess)
+## Hash Operator (For Importing Unique hash of files)
+
+- This operator is designed to be used together with Lodash-tag, allowing direct access to the unique ID when needed.
+- 
+
+```json
+"extensions": {
+	"html": [ // Tag att
+		"class" 
+	]
+}
+```
+
+Given Proxymap entry of target folder has data.
+
+```html
+<!-- Input -->
+<div 
+	class="class-1 #class" 
+	id="\#id"
+>
+<style>
+	.\#class {...}
+	#\#id {...}
+</style>
+
+<!-- Output -->
+<div class="class-1 _8r-23_class" id="_8r-23_id">
+<style>
+	._8r-23_class { ... }
+	#_8r-23_id { ... }
+</style>
+```
+
+## Compose Operators (For composing sym-classes)
 
 ```html
 <summon
@@ -617,21 +653,6 @@ All the first order blocks of each file will have a corresponding symbolic class
   - `=` maps to `@--assign`
   - `~` maps to `@--attach`
 - Both operators produce the same final CSS output. They coexist mainly for developer convenience and clarity.
-
-
-## Load Hash Operator (For Importing Unique hash of files)
-
-- This operator is designed to be used together with Lodash-tag, allowing direct access to the unique ID when needed.
-
-### Input
-```html
-<div class="class-1 #custom-class" id="#id">
-```
-
-### Output
-```html
-<div class="class-1 _8r-23_custom-class" id="_8r-23_id">
-```
 # 6. Inline Composition
 
 ## Symbolic-Class 

@@ -1,4 +1,4 @@
-# License Document
+# End Use License Agreement
 
 ## 1. Definitions
 
