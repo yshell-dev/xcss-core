@@ -1,27 +1,26 @@
 # Documentation
 
-**XCSS** is a **constraint-driven CSS build-time tool** that takes an opinionated yet flexible approach diverging from vanilla CSS, while preserving raw flexibility and adding powerful dependency resolution.
+## What is XCSS?
 
-- **Framework Agnostic**  
-  Works seamlessly in any text-based environment—no ties to specific frameworks or tooling.  
-- **Design System Compatible**  
-  Integrates effortlessly with existing design systems, tokens, and component libraries—no rewrites needed, just augmentation.  
-- **Constraint-Based Syntax**  
-  Write styles within logical boundaries to enable predictable behavior and modular reuse.  
-- **Native Dependency Management**  
-  Automatically resolves cascading order and style dependencies, minimizing manual overrides and conflicts.  
-- **Reusable Blocks**  
-  Compose modular style blocks that grow with your app—no tangled selectors or brittle overrides.  
-- **Production-Ready Optimization**  
-  Delivers unblotted, dependency-aware styles for faster, cleaner builds.
+XCSS is a constraint-driven CSS build-time kernel designed to be the foundational engine for building custom CSS frameworks. Rather than being a traditional CSS framework loaded with predefined classes, XCSS provides a powerful structural abstraction that preserves the full flexibility of vanilla CSS while adding native dependency management and modular composition. It works seamlessly across any text-based environment, is framework agnostic, and integrates effortlessly with existing design systems and token libraries.
 
-## Do We Need Another CSS Framework?
+By focusing on modular style blocks, logical constraint-based syntax, and automatic cascading and dependency resolution, XCSS empowers teams to build maintainable, predictable, and optimized stylesheets tailored precisely to their project needs.
 
-XCSS is not yet another CSS framework loaded with predefined classes—you can start using XCSS without any classes at all and achieve rapid development pacing.  
+## Why Use XCSS?
 
-You can easily customize your own framework with as much ease as writing a few CSS files. XCSS acts as a structural CSS abstraction that reduces context switching between CSS and HTML, improving portability.
+XCSS strikes a careful balance between raw flexibility and developer experience without sacrificing either. It:
 
-Its unique design patterns may feel unconventional at first, but the benefits are clear—resulting in lighter, unblotted HTML, less styling logic in JS, and finely tuned stylesheet tailored specifically for your projects.
+- Enables fully customizable framework creation with minimal initial setup, reducing context switching between CSS and HTML.
+
+- Resolves style dependencies and cascading order natively at build time, minimizing manual overrides and conflicts.
+
+- Supports reusable modular blocks that grow with your application, eliminating brittle selectors and tangled overrides.
+
+- Delivers production-ready optimized builds with debloated, dependency-aware styles for faster and cleaner deployment.
+
+- Acts as a robust kernel platform, giving you complete control and transparency while providing structural best practices and optimization out of the box.
+
+In short, XCSS is the essential, extensible core upon which efficient, scalable, and maintainable CSS frameworks can be built—offering the power and performance that modern design systems and large-scale projects demand.
 
 ## Sections
 
@@ -552,37 +551,51 @@ All the first order blocks of each file will have a corresponding symbolic class
 ```HTML
 <div class="
 	~atomic$class-1 
-	=component$class-1
+	!order$class-3
 	~atomic$class-2
 	~atomic$class-3
-	!final$class-1
-	!final$class-2
-	=component$class-2
+	!order$class-1
+	!order$class-2
+	=final$class-2
+	=final$class-3
+	=final$class-1
 ">Content</div>
 ```
 
 - These operators signal the use of symbolic classes (sym-classes) in class attributes.
+
 - They distinguish sym-classes from regular classes used by other styling systems, allowing simultaneous use without conflicts.
+
 - Two kinds of assignments:
-  - **Rapid Assign** (`~`): Classes applied with this operator do not provide fine control over CSS cascading. Deep chaining or complex component classes might not cascade correctly using this.
-  - **Rigid Assign** (`=`): Classes applied with this operator allow strict control over cascading order. These classes will always follow after all rapid classes in the final cascading order.
-  - **Final Assign** (`!`): Classes applied with this operator comes after rigid assignments but does't provide explicit control over cascading over.
+  
+  - **Scattered Assign** (`~`): May not cascade styles reliably, especially in complex or deeply nested components, so you dont get precise control.
+  - **Ordered Assign** (`!`): Classes applied with this operator comes after scattered assigns and provide explicit control over cascading over. 
+  - **Finalized Assign** (`=`): Classes applied with this operator comes after Ordered assigns but does't provide explicit control over cascading.
+
+- **Scattered Assign** and **Finalized Assign** can also be used outside tags. Hence they can also be used to import classes with in scripts.
+
+- Assignmet operations cannot be used inside tag attributes, symclass compose attributes and symclass compose values.
+
+- Use escape charecter(`\`) before these symbols if need to escape operator action.
 
 - Output cascading of the provided example may follow order: 
+
 ```
 [
-	// Order of rapid classes have unpredictable cascading order
+	// Scattered classes have unpredictable cascading order.
 	atomic$class-2,
 	atomic$class-1,
 	atomic$class-3,
 
-	// Rigid classes come after rapid classes and strictly follow cascade order 
-	component$class-1,
-	component$class-2,
+	// Ordered classes strictly follow cascade order.
+	order$class-3
+	order$class-1
+	order$class-2
 
-	// Final classes come after rigid classes and have unpredictable cascading order 
-	component$class-1,
-	component$class-2,
+	// Finalized classes have unpredictable cascading order.
+	final$class-1
+	final$class-3
+	final$class-2
 ]
 ```
 
@@ -847,12 +860,6 @@ _$custom-pattern="
 ### Import Hash | `<!#>`
 - Injects hash of files at position.
 - if you want to acces file hash with in compose tag attribute values you should use this.
-
-### Import Rapid Class | `<!~sym-class>`
-- Import equilalent class from cascade group of rapid classes.
-
-### Import Rigid Class | `<!=sym-class>`
-- Import equilalent class from cascade group of final classes.
 # 8. Appendix
 
 ## Errors & diagnostics
@@ -865,11 +872,6 @@ _$custom-pattern="
 - Local symbolic-classes (single `$`) must be unique within the declaring file.
 - Global symbolic-classes (`$$`) must be unique across the entire project workspace.
 - Neither local nor global symbolic-classes should collide with symbolic-classes generated by libraries; library-derived symbolic-classes are considered a separate namespace and collisions will produce warnings or errors during compilation.
-
-## Collision & resolution
-
-- When a **sym-class name collision** is detected (local, global or library-derived), the conflicting definitions are ignored as a fallback for that compilation pass. The compiler will emit a diagnostic explaining the collision and which entries were skipped.
-- Once the conflict is resolved in source (unique names or adjusted libraries), a subsequent build will rebuild the affected artifacts and include the previously skipped definitions.
 
 ## Proxymap behavior
 
