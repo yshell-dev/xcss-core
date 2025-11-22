@@ -87,9 +87,10 @@ npm run xcss {command}
 	- Executes only if no compilation errors are present
 	- Falls back to the `preview` build if conditions aren't met
 	- **Recommended for production-grade enterprise deployments**
-# 2. Example Preview
+# 2. Example Demo
 
 ## Input
+
 - The following is fragmented preview of input to output compilation.
 
 ```html
@@ -129,7 +130,7 @@ _$custom-pattern="
 	<staple amorphous$--container>
 		<svg xmlns="http://www.w3.org/2000/svg">
 			<defs>
-				<filter id="<!#>glass-distortion" x="0%" y="0%" width="100%" height="100%">
+				<filter id="#glass-distortion" x="0%" y="0%" width="100%" height="100%">
 					<feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92"
 						result="noise" />
 					<feGaussianBlur in="noise" stdDeviation="2" result="blurred" />
@@ -148,7 +149,7 @@ _$custom-pattern="
 		background-size: 18px 18px;
 		background-image: linear-gradient(#ffffff 0.9px, transparent 0.9px), 
 			linear-gradient(to right, oklab(100% 0 -0.00011) 0.9px, #cacaca 1px);
-	" data-glass-type="liquid" amorphous$$$container="
+	" data-amorphous-type="liquid" amorphous$$$container="
 		~ amorphous$--container;
 		= p-24 m-0 border-0 d-flex align-center justify-center position-fixed
 			= tx$decoration-none border-dotted cursor-pointer tx$size-h1;
@@ -159,17 +160,17 @@ _$custom-pattern="
 		}
 		&::after {
 			= position-absolute inset-0 layer-neg-2 radius-16 tx$content-clear;
-			filter: url(#<!#>glass-distortion);
+			filter: url(#\#glass-distortion);
 		}
 		&::before {
 			= position-absolute inset-0 layer-neg-1 radius-16 tx$content-clear;
 			box-shadow: inset 0 0 15px -5px #ffffffec;
 		}
-		&[data-glass-type='frosted'] {
+		&[data-amorphous-type='frosted'] {
 			&::after { backdrop-filter: blur(1px); }
 			&::before { background-color: lab(93.8 1 -5.7 / 0.713); }
 		}
-		&[data-glass-type='liquid'] {
+		&[data-amorphous-type='liquid'] {
 			&::after { backdrop-filter: blur(.5px); }
 			&::before { background-color: #e7fffa73; }
 		}
@@ -182,7 +183,7 @@ _$custom-pattern="
 - `@--attach` / `~` can be used to add a dependency attachment of a symbolic class. These will be used for dependency tracking.
 
 ```html
-	<div data-glass-type='liquid' class="~amorphous$$$container"> Content </div>
+	<div data-amorphous-type='liquid' class="~amorphous$$$container"> Content </div>
 ```
 - Symbolic classes can  defined anywhere and used where-ever within the provided scope.
 
@@ -237,19 +238,19 @@ _$custom-pattern="
 			box-shadow: 0px 6px 12px -6px #77777777;
 		}
 
-		._8i.glass-type[data-glass-type='frosted']::after {
+		._8i.glass-type[data-amorphous-type='frosted']::after {
 			backdrop-filter: blur(1px);
 		}
 
-		._8i.glass-type[data-glass-type='frosted']::before {
+		._8i.glass-type[data-amorphous-type='frosted']::before {
 			background-color: rgba(255, 255, 255, 0.6);
 		}
 
-		._8i.glass-type[data-glass-type='liquid']::after {
+		._8i.glass-type[data-amorphous-type='liquid']::after {
 			backdrop-filter: blur(.5px);
 		}
 
-		._8i.glass-type[data-glass-type='liquid']::before {
+		._8i.glass-type[data-amorphous-type='liquid']::before {
 			background-color: rgba(255, 255, 255, 0.25);
 		}
 
@@ -292,7 +293,7 @@ _$custom-pattern="
 
 <body data-sveltekit-preload-data="hover" class="_8h">
 
-	<div class="_8i" data-glass-type='liquid'>
+	<div class="_8i" data-amorphous-type='liquid'>
 		Content
 	</div>
 
@@ -443,7 +444,7 @@ _$custom-pattern="
 - This is your boilerplate setup for new projects.
 - Group classes into clusters and enable inheritance up to 6 levels, deriving from existing classes.
 - Library management features are detailed in the next section.
-# 4. Composing Libraries
+# 4. Libraries
 
 Composing libraries is essentially like managing a set of CSS files—sensibly grouping classes and naming them according to established standards. This approach ensures clarity, maintainability, and consistency across your stylesheets.
 
@@ -546,93 +547,115 @@ All the first order blocks of each file will have a corresponding symbolic class
 	-  `@--attach`: Files of **Order ≤ n**
 # 5. Operators
 
-## Assign Operators (For Using Sym-Classes)
+### Watch attributes
 
-- These operators signal the use of symbolic classes (sym-classes) in class attributes.
+For the files of given extention, **watch attributes** for those files, provide additional featues for declaration.
+```json
+"extensions": {
+	"html": [ "class", "id" ]
+} // Watch tag attribute
+```
 
-- They distinguish sym-classes from regular classes used by other styling systems, allowing simultaneous use without conflicts.
+## Hash Loader
 
-- Two kinds of assignments:
+- This operator can be usef for importing Unique hash of files.
+- When used in values of watch attributes, snippet that follows the operater gets registered as valid **hash follower** with in the file.
+- To use import hashes other that values of watch attributes, along with compose attributes, prefix valid hash follower with `\#`.
+
+#### Input
+```html
+<div class="#class-1" id="#id-1" data-test="#test"> 
+<!-- Hash followers = ["class-1", "id-1"] -->
+
+<style -$symclass {#\#id-1}&="prop: val;">
+	.\#class-1 {...}
+	#\#id {...}
+</style>
+<!-- style -->
+<script>
+	const id = "\#id-1"
+	const id = "\#id-2"
+</script>
+```
+
+#### Output
+```html
+<div class="_8r-23_class-1" id="_8r-23_id-1" data-test="#test">
+<!-- Hash followers = ["class-1", "id-1"] -->
+
+<style>
+	#_8r-23_id-1 .-$symclass { prop: val; }
+	._8r-23_class { ... }
+	#_8r-23_id { ... }
+</style>
+<script>
+	const id = "_8r-23_id-1"
+	const id = "\#id-2"
+</script>
+```
+
+## Class Loaders
+
+These operators signal the use of symbolic classes (sym-classes) in class attributes. They distinguish sym-classes from regular classes used by other styling systems, allowing simultaneous use without conflicts.
   
-  - **Scattered Assign** (`~`): May not cascade styles reliably, especially in complex or deeply nested components, so you dont get precise control.
-  - **Ordered Assign** (`!`): Classes applied with this operator comes after scattered assigns and provide explicit control over cascading over. 
-  - **Finalized Assign** (`=`): Classes applied with this operator comes after Ordered assigns but does't provide explicit control over cascading.
+Class loaders has three varients each with different purpuses
 
-- **Scattered Assign** and **Finalized Assign** can also be used outside tags. Hence they can also be used to import classes with in scripts.
+### Scattered Class Loader (`~`)
+- May not cascade styles reliably, especially in complex or deeply nested components, so you dont get precise control.
+- To use operator other that values of watch attributes, prefix valid symclass with `\~`.
 
-- Assignmet operations cannot be used inside tag attributes, symclass compose attributes and symclass compose values.
+### Ordered Class Loader (`!`)
+- Classes applied with this operator comes after scattered assigns and provide explicit control over cascading over. 
+- These imports can't be useed outside values of watch attributes.
 
-- Use escape charecter(`\`) before these symbols if need to escape operator action.
+### Final Class Loader (`=`)
+- Classes applied with this operator comes after Ordered assigns but does't provide explicit control over cascading.
+- To use operator other that values of watch attributes, prefix valid symclass with `\=`.
 
-- Output cascading of the provided example may follow order: 
+#### Example
 
-### Input
-```HTML
+```html
 <div class="
 	~atomic$class-1 
 	!order$class-3
 	~atomic$class-2
 	~atomic$class-3
 	!order$class-1
+	=final$class-2 
 	!order$class-2
-	=final$class-2
-	=final$class-3
-	=final$class-1
-">Content</div>
-```
+" onload="loading?'\=final$class-1':'\=final-class-3'"> Content </div>
+<!-- 
+Prefer not using `Final classes` in watch attributes, 
+unless for conditional adding to classname with inline script.
+-->
 
-### Output
-```
-[
-	// Scattered classes have unpredictable cascading order.
-	atomic$class-2,
-	atomic$class-1,
-	atomic$class-3,
+<style>
+	/* Scattered classes have unpredictable cascading order. */
+	.atomic\$class-2 { ... }
+	.atomic\$class-1 { ... }
+	.atomic\$class-3 { ... }
 
-	// Ordered classes strictly follow cascade order.
-	order$class-3
-	order$class-1
-	order$class-2
+	/* Ordered classes strictly follow cascade order. */
+	.order\$class-3 { ... }
+	.order\$class-1 { ... }
+	.order\$class-2 { ... }
 
-	// Finalized classes have unpredictable cascading order.
-	final$class-1
-	final$class-3
-	final$class-2
-]
-```
+	/* Final classes have unpredictable cascading order. */
+	.final\$class-1 { ... }
+	.final\$class-3 { ... }
+	.final\$class-2 { ... }
+</style>
 
-## Hash Operator (For Importing Unique hash of files)
-
-- This operator is designed to be used together with Lodash-tag, allowing direct access to the unique ID when needed.
-- 
-
-```json
-"extensions": {
-	"html": [ // Tag att
-		"class" 
+<script>
+	const selectorArray = [
+		"\~atomic$class-3", // returns result
+		"~atomic$class-3", // stays the same
+		"\!order$class-1",  // stays the same
+		"!order$class-1",  // stays the same
+		"\=final$class-2",  // returns result
+		"=final$class-2",  // stays the same
 	]
-}
-```
-
-Given Proxymap entry of target folder has data.
-
-```html
-<!-- Input -->
-<div 
-	class="class-1 #class" 
-	id="\#id"
->
-<style>
-	.\#class {...}
-	#\#id {...}
-</style>
-
-<!-- Output -->
-<div class="class-1 _8r-23_class" id="_8r-23_id">
-<style>
-	._8r-23_class { ... }
-	#_8r-23_id { ... }
-</style>
+<script>
 ```
 
 ## Compose Operators (For composing sym-classes)
@@ -653,7 +676,7 @@ Given Proxymap entry of target folder has data.
   - `=` maps to `@--assign`
   - `~` maps to `@--attach`
 - Both operators produce the same final CSS output. They coexist mainly for developer convenience and clarity.
-# 6. Inline Composition
+# 6. Composition
 
 ## Symbolic-Class 
 
@@ -667,7 +690,6 @@ Given Proxymap entry of target folder has data.
 - **`scope`**: Scope of access of declared styles
 	- `$` | **Local:** with in the declared file.
 	- `$$` | **Global:** across all valid files in target folders.
-	- `$$$` | **Public:** Scoped globally. Exported as artifact for cross-project use.  
 - **`identifier`**: Specific identifier within the cluster.
 	- Available characters: `A-Z` `a-z` `0-9` and `-`.
 
@@ -685,7 +707,6 @@ Given Proxymap entry of target folder has data.
 <div -$button=" ... ">
 <div _$button-2={ ... }>
 <div animate$$fade-in=' ... '>
-<div animate$$$fade-out=[ ... ]>
 ```
 
 ## Wrapper Attributes
@@ -734,32 +755,30 @@ body[data-loading] .$class { ... }
 ### `debug`
 
 - Unoptimized cascading order, and verbose classnames representing source-data.
-- **Rapid Classes:**
-  - Srtucture: `{Type}|{Definition-Source}_{Symbolic-Class}`
+- **Scattered Classes:**
+  - Format: `{Type}|{Definition-Source}_{Symbolic-Class}`
   - Example: `PUBLIC|xrc/content/demo.html:30:2_glass$$$container`
-- **Rigid Classes:**
-  - Default prefixed by `TAG|{Import-Source}__{Type}|{Definition-Source}_{Symbolic-Class}`
+- **Ordered Classes:**
+  - Format: `TAG|{Import-Source}__{Type}|{Definition-Source}_{Symbolic-Class}`
   - Example: `TAG|xrc/content/demo.html:16:58__PUBLIC|xrc/content/demo.html:30:2_glass$$$container`
+- **Final Classes:**
+  - Format: `{Type}|{Definition-Source}_{Symbolic-Class}_Final`
+  - Example: `PUBLIC|xrc/content/demo.html:30:2_glass$$$container_Final`
 
 ### `preview`
 
 - Unoptimized cascading order, and respective classnames.
 - Classname is enumered hash followed by cascade position index.
-- **Rapid Classes:**
-  - Default prefixed by `__`
-  - Example: `__k9-9`, `__8i-35` 
-- **Rigid Classes:**
-  - Default prefixed by `_`
-  - Example: `_H9-45`, `_8h-23` 
-
-### `publish`
-
-- Optimized cascading order, and respective classnames.
-- Classname is just enumered hash for the class.
-- **Example:** 
-  - Rapid Classes: `__k9`, `__8i`
-  - Rigid Classes: `_H9`, `_8h`
-# 7. Custom HTML Tags
+- **Scattered Classes:**
+  - Format: `_{hash}`
+  - Example: `__k9`, `__8i` 
+- **Ordered Classes:**
+  - Format: `__{hash}-{cascade-counter}`
+  - Example: `__H9-45`, `__8h-23` 
+- **Final Classes:**
+  - Format: `___{hash}`
+  - Example: `___k9`, `___8i`
+# 7. Custom Tags
 
 ## Declaration Tags (Paired Tags)
 
@@ -779,7 +798,7 @@ body[data-loading] .$class { ... }
     attribute-3="attr-value-3"
     local$class="
         ~ local$-class local$--class;
-        = $class-1 $class-2 $class-3;
+        = $class-1 $$class-2 $class-3;
         property-1: value-1;
         property-2: value-2;
         property-3: value-3;
@@ -812,49 +831,47 @@ body[data-loading] .$class { ... }
 
 <head>
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta 
+		name="viewport"
+		content="width=device-width, initial-scale=1" 
+	/>
 	<!-- style -->
 </head>
 
 <body 
-data-sveltekit-preload-data="hover" 
-class="=bg$pattern-checkerboard =$custom-pattern" 
-_$custom-pattern="
-	--pattern-checker-bg1: #456734;
-	--pattern-checker-bg2: #2bb43d;
-	--pattern-checker-size: var(---delta-block-lg);
-">
+	data-sveltekit-preload-data="hover" 
+	class="=bg$pattern-checkerboard =$custom-pattern" 
+	_$custom-pattern="
+		--pattern-checker-bg1: #456734;
+		--pattern-checker-bg2: #2bb43d;
+		--pattern-checker-size: var(---delta-block-lg);
+	"
+>
 
 	<staple amorphous$--container>
 		<svg xmlns="http://www.w3.org/2000/svg">
-			<defs>
-				<filter id="<!#>glass-distortion" x="0%" y="0%" width="100%" height="100%">
-                    <!-- Use of lodash tag with in staple block -->
-					<feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92"
-						result="noise" />
-					<feGaussianBlur in="noise" stdDeviation="2" result="blurred" />
-					<feDisplacementMap in="SourceGraphic" in2="blurred" scale="77" xChannelSelector="R"
-						yChannelSelector="G" />
-				</filter>
-			</defs>
+			<defs> ... </defs>
 		</svg>
 	</staple>
 
 
-	<summon data-glass-type="liquid" amorphous$$$container="
-		~ amorphous$--container;
-		&::after {
-			filter: url(#<!#>glass-distortion); // Use of lodash tag
-		}
-	">
+	<summon 
+		data-glass-type="liquid" 
+		amorphous$$$container="
+			~ amorphous$--container;
+			&::after {
+				filter: url(#\#glass-distortion);
+			}
+		"
+	>
 		Template
 	</summon>
 
-	<div id="#scoped-id" data-glass-type='liquid' class="~amorphous$$$container"> Content </div>
-    <!-- Unique id with in file -->
-    <script>
-        const id = "<!#>scoped-id"
-    </script> 
+	<div 
+		id="#scoped-id" 
+		data-glass-type='liquid' 
+		class="~amorphous$$$container"
+	> Content </div>
 	<!-- staple -->
 </body>
 
@@ -873,14 +890,6 @@ _$custom-pattern="
 ### `<staple />` / `<!-- staple -->`
 
 - Acts as a placeholder for injecting attached `staple-snippets` into the compiled output.
-
-## Operator Tags
-
-- These tags can be used to import values, if value has to be imported not with in a tag.
-
-### Import Hash | `<!#>`
-- Injects hash of files at position.
-- if you want to acces file hash with in compose tag attribute values you should use this.
 # 8. Appendix
 
 ## Errors & diagnostics
