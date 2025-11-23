@@ -34,7 +34,7 @@
     "name": "Vyshnav Prasad",
     "url": "https://www.yshell.dev"
   },
-  "license": "LICENSE.md",
+  "license": "MIT",
   "homepage": "https://www.xcss.io",
   "bugs": {
     "url": "https://github.com/yshell-dev/xcss-package/issues"

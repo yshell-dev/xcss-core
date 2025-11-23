@@ -56,9 +56,11 @@ if (!repoUrl.startsWith('https://github.com/')) {
 const repoTag = packageData.version;
 const currentAssetUrl = `${repoUrl}/releases/download/v${repoTag}/${__binfile}`;
 const latestAssetUrl = `${repoUrl}/releases/download/latest/${__binfile}`;
-const binDir = path.resolve(__dirname, 'bin');
-const binPath = path.resolve(binDir, __binfile);
+const binDir = path.resolve(__dirname, 'source', 'bin');
+
+const devMode = fs.existsSync(path.resolve(__dirname, "source", "scripts"));
 const devPath = path.resolve(__dirname, "source", "scripts", "live.sh");
+const binPath = path.resolve(binDir, __binfile);
 // console.log({ __filename, __dirname, __system, __binfile, assetUrl, binPath });
 
 function downloadBinary(url, dests = []) {
@@ -108,7 +110,7 @@ function downloadBinary(url, dests = []) {
     });
 }
 
-export async function binUpgrade(args = []) {
+async function binUpgrade(args = []) {
     const fallbackAssetUrl = latestAssetUrl
     if (!fs.existsSync(binPath) || args[0] === "reinstall") {
         console.error('Reinstalling binary.');
@@ -160,6 +162,6 @@ export async function binUpgrade(args = []) {
     }
 })();
 
-export default function getBinPath(devmode = false) {
-    return devmode ? devPath : binPath;
+export default function getBinPath() {
+    return devMode ? devPath : binPath;
 }

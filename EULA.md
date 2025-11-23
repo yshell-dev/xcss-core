@@ -1,64 +1,31 @@
-# EULA
+End User License Agreement (EULA)
 
-## End User License Agreement
+1. Introduction
 
-### 1. Definitions
+This End User License Agreement ("EULA") governs your use of the XCSS Package ("Package"), provided under the MIT License. By installing or using the Package, you agree to comply with all terms outlined in this agreement.
 
-- "XCSS": The software tool, including its binary, documentation, and associated materials.
-- "We": Vyshnav Prasad, git@github.com:yshell-dev, the licensor.
-- "You": The individual or entity using XCSS.
+2. License for XCSS Package
 
-### 2. Grant of License
+The Package itself, including all associated source code and assets outside the embedded ./source folder, is licensed under the MIT License. This permits free use, modification, distribution, and private or commercial use under the terms of the MIT License.
 
-You may:
-- Download and use the Preview Package for free during the preview period.
-- Integrate it into your development tools and build processes.
-Attempts to circumvent the preview period restrictions are a violation of this License.
+3. Embedded ./source Folder
 
-### 3. Ownership and Copyright
+The Package includes an embedded folder called ./source which contains a bundled npm package build. This folder is distributed with an alternate set of documentation and licensing terms specific to its contents.
 
-XCSS and all worldwide intellectual property rights therein are the exclusive property of XPKTR Labs. All rights not expressly granted to you under this License.
+3.1 Alternate Documentation
+The ./source folder includes its own documentation files which supersede the Package's main documentation for any components or scripts contained therein. Users should refer to those documents for usage, build instructions, and contribution guidelines specific to the npm package.
 
-### 4. Restrictions
+3.2 Licensing of ./source
+The ./source folder may be subject to a different license than the MIT License applied to the core Package. It is your responsibility to review and comply with the license terms provided within the ./source folder before using, modifying, or distributing its contents.
 
-You may not:
-- Copy, modify, or distribute XCSS’s source code.
-- Decompile, reverse-engineer, or attempt to derive the source code.
-- Remove or modify any copyright notices.
+4. Disclaimer of Warranty
 
-### 5. Community and Contributions
+The Package and the contents of the ./source folder are provided "as is" without warranty of any kind. The authors disclaim all warranties, express or implied, including but not limited to fitness for a particular purpose and non-infringement.
 
-During the preview period, you are encouraged to:
-- Share your feedback, ideas, and sample projects by opening [issues](https://github.com/yshell-dev/xcss-package/issues) or [discussions](https://github.com/yshell-dev/xcss-package/discussions) at [github.com/yshell-dev/xcss-package](https://github.com/yshell-dev/xcss-package).
-- Experiment with integrating XCSS into your own projects and showcase your results.
-- Direct source contributions to xcss-core are not expected at this stage.
-- If you wish, you can fork the xcss-core repository to create your own variants or flavors from [github.com/yshell-dev/xcss-package](https://github.com/yshell-dev/xcss-package).
+5. Limitation of Liability
 
-### 6. Tools Powered by XCSS
+In no event shall the authors or copyright holders be liable for any damages arising from the use or inability to use the Package or the ./source folder contents, including any direct, indirect, incidental, special, or consequential damages.
 
-If you wish to build tools or applications powered by XCSS for public or commercial use:
-- You must establish a written contract with XPKTR Labs prior to development or distribution.
-- Contracts will outline terms for usage. Contact xcss@yshell.dev to initiate contract discussions.
+6. Acceptance
 
-### 7. Confidentiality
-
-You agree to maintain the confidentiality of non-public aspects of XCSS, including but not limited to source code, algorithms, proprietary methods, and implementation details.
-
-### 8. No Warranty
-
-XCSS is provided "AS IS", without warranty of any kind, express or implied. Real-time features are experimental during the preview period and may evolve post-preview.
-
-### 9. Package Usage Terms
-
-The Package may be installed via package managers (e.g., npm, yarn).
-
-### 10. Updates and Support
-
-Preview period updates are at our discretion.
-Support is via community channels (e.g., GitHub issues).
-
----
-
-### Contact Information
-- **Website:** www.xcss.io
-- **E-Mail:** xcss@yshell.dev
+By using the XCSS Package, you acknowledge that you have read, understood, and agreed to the terms of this Agreement including the special provisions pertaining to the embedded ./source folder.
