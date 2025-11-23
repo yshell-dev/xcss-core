@@ -13,9 +13,11 @@ The Package itself, including all associated source code and assets outside the 
 The Package includes an embedded folder called ./source which contains a bundled npm package build. This folder is distributed with an alternate set of documentation and licensing terms specific to its contents.
 
 3.1 Alternate Documentation
+
 The ./source folder includes its own documentation files which supersede the Package's main documentation for any components or scripts contained therein. Users should refer to those documents for usage, build instructions, and contribution guidelines specific to the npm package.
 
 3.2 Licensing of ./source
+
 The ./source folder may be subject to a different license than the MIT License applied to the core Package. It is your responsibility to review and comply with the license terms provided within the ./source folder before using, modifying, or distributing its contents.
 
 4. Disclaimer of Warranty
