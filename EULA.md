@@ -10,7 +10,7 @@ The Package itself, including all associated source code and assets outside the 
 
 ## 3. Embedded ./source Folder
 
-The Package includes an embedded folder called ./source which contains a bundled npm package build. This folder is distributed with an alternate set of documentation and licensing terms specific to its contents.
+The Package includes an embedded folder called ./source which contains a source executable. This folder is distributed with an alternate set of documentation, privacy, licensing and terms specific to its contents.
 
 ### 3.1 Alternate Documentation
 

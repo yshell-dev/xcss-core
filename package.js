@@ -24,44 +24,30 @@ function normalizeArch(arch) {
 }
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.resolve(__filename, '..');
 const __system = `${process.platform}-${normalizeArch(process.arch)}`;
 const __binfile = platformBinMap[__system];
+const __diroot = path.resolve(__filename, '..');
+const __dirsrc = path.resolve(__diroot, 'source');
+const __dirbin = path.resolve(__dirsrc, 'bin');
+if (!__binfile) { console.error(`Unsupported platform or architecture: ${__system}`); process.exit(1); }
 
-if (!__binfile) {
-    console.error(`Unsupported platform or architecture: ${__system}`);
-    process.exit(1);
-}
-
-const packageJsonPath = path.join(__dirname, 'package.json');
+const soure_repo = "https://github.com/yshell-dev/xcss-package"
+const packageJsonPath = path.join(__diroot, 'package.json');
 const packageData = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+const currentAssetUrl = `${soure_repo}/releases/download/v${packageData.version}/${__binfile}`;
+const latestAssetUrl = `${soure_repo}/releases/download/latest/${__binfile}`;
 
-// Normalize repo URL for GitHub releases
-let repoUrl = packageData.repository?.url || '';
-if (repoUrl.endsWith('.git')) {
-    repoUrl = repoUrl.slice(0, -4);
-}
-if (repoUrl.startsWith('git+')) {
-    repoUrl = repoUrl.slice(4);
-}
-if (repoUrl.startsWith('git://')) {
-    repoUrl = 'https://' + repoUrl.slice(6);
-}
-// Ensure repo URL is https-based GitHub URL (e.g. https://github.com/user/repo)
-if (!repoUrl.startsWith('https://github.com/')) {
-    console.error('Unsupported or invalid repository URL in package.json');
-    process.exit(1);
-}
-
-const repoTag = packageData.version;
-const currentAssetUrl = `${repoUrl}/releases/download/v${repoTag}/${__binfile}`;
-const latestAssetUrl = `${repoUrl}/releases/download/latest/${__binfile}`;
-const binDir = path.resolve(__dirname, 'source', 'bin');
-
-const devMode = fs.existsSync(path.resolve(__dirname, "source", "scripts"));
-const devPath = path.resolve(__dirname, "source", "scripts", "live.sh");
-const binPath = path.resolve(binDir, __binfile);
+const devMode = fs.existsSync(path.resolve(__dirsrc, "scripts"));
+const devPath = path.resolve(__dirsrc, "scripts", "live.sh");
+const binPath = path.resolve(__dirbin, __binfile);
 // console.log({ __filename, __dirname, __system, __binfile, assetUrl, binPath });
+
+function syncMarkdown() {
+    let readme = fs.readFileSync(path.resolve(__diroot, "scaffold", "intro.md"));
+    readme += "\n---\n" + fs.readFileSync(path.resolve(__dirsrc, "FLAVOUR.md"))
+    readme += "\n---\n" + fs.readFileSync(path.resolve(__dirsrc, "README.md"));
+    fs.writeFileSync(path.resolve(__diroot, "README.md"), readme)
+}
 
 function downloadBinary(url, dests = []) {
     console.log("Source: " + url);
@@ -114,8 +100,8 @@ async function binUpgrade(args = []) {
     const fallbackAssetUrl = latestAssetUrl
     if (!fs.existsSync(binPath) || args[0] === "reinstall") {
         console.error('Reinstalling binary.');
-        if (!fs.existsSync(binDir)) {
-            fs.mkdirSync(binDir, { recursive: true });
+        if (!fs.existsSync(__dirbin)) {
+            fs.mkdirSync(__dirbin, { recursive: true });
         }
         try {
             await downloadBinary(currentAssetUrl, [binPath]);
@@ -131,8 +117,8 @@ async function binUpgrade(args = []) {
     }
     if (!fs.existsSync(binPath) || args[0] === "upgrade") {
         console.error('Upgrading to latest binary.');
-        if (!fs.existsSync(binDir)) {
-            fs.mkdirSync(binDir, { recursive: true });
+        if (!fs.existsSync(__dirbin)) {
+            fs.mkdirSync(__dirbin, { recursive: true });
         }
         await downloadBinary(latestAssetUrl, [binPath]);
         if (process.platform !== 'win32') {
@@ -155,8 +141,9 @@ async function binUpgrade(args = []) {
 
         if (child.error) {
             console.error(`Failed to execute ${__binfile} at ${binPath}: ${child.error.message}`);
+        } else {
+            syncMarkdown()
         }
-
     } catch (err) {
         console.error(`Error: ${err.message}`);
     }

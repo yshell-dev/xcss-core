@@ -52,17 +52,13 @@
     ".gitmodules",
     ".gitignore",
     ".npmignore",
-    "package.d.ts",
-    "package.js",
-    "ALERTS.md",
     "CHANGELOG.md",
     "EULA.md",
     "LICENSE.md",
+    "package.d.ts",
+    "package.js",
     "package.json",
-    "PRIVACY.md",
-    "PROMPT.md",
     "README.md",
-    "RELEASE.md",
-    "TERMS.md"
+    "RELEASE.md"
   ]
 }
