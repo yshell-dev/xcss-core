@@ -64,7 +64,7 @@ function OutputUpdate(updateComponent = false) {
 
     if (updateComponent) {
         const staple = (typeof ComponentData.staple === "string") ? ComponentData.staple : '';
-        const structure = (typeof ComponentData.summon === "string" && ComponentData.summon.length) ? ComponentData.summon : "{Content}";
+        const structure = (typeof ComponentData.summon === "string" && ComponentData.summon.length) ? ComponentData.summon : "[Placeholder]";
         const selector = (typeof ComponentData.symclass === "string" && ComponentData.symclass.length) ? ComponentData.symclass : '[N/A]';
 
         StapleElement.innerHTML = staple;
@@ -157,6 +157,7 @@ ws.onerror = function (e) {
 };
 
 let awaitRefresh = false;
+let currentComponentId = 0;
 let currentComponent = ComponentData;
 ws.onmessage = function (evt) {
     const response = JSON.parse(evt.data);
@@ -164,13 +165,16 @@ ws.onmessage = function (evt) {
         tweakIndex[response.result.key]?.apply(response.result.value);
         OutputUpdate(false);
     } else if (response.method === 'sandbox-view') {
-        if (AUTOREFRESH){
+        if (AUTOREFRESH) {
             if (awaitRefresh) { return }
             awaitRefresh = true;
             setTimeout(() => awaitRefresh = false, 250)
         }
         try {
-            if (deepEqual(currentComponent, newData.result)) return;
+            if (
+                (response["id"] === currentComponentId) 
+            //  || deepEqual(currentComponent, newData.result)
+            ) { return; }
 
             const newData = response.result;
             if (newData && typeof newData === "object") {
@@ -320,7 +324,7 @@ ws.onopen = () => {
         tweak.Initialize();
     });
     requstComponent;
-    if (AUTOREFRESH){
+    if (AUTOREFRESH) {
         setInterval(requstComponent, 1000)
     }
 };
