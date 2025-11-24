@@ -5,7 +5,5 @@
 
 bin
 source
-bin/** 
-source/** 
 
 RELEASE.md
