@@ -157,8 +157,8 @@ ws.onerror = function (e) {
 };
 
 let awaitRefresh = false;
-let currentComponentId = 0;
-let currentComponent = ComponentData;
+let activeComponentId = 0;
+let activeComponentData = ComponentData;
 ws.onmessage = function (evt) {
     const response = JSON.parse(evt.data);
     if (response.method === 'sandbox-state-set' || response.method === 'sandbox-state-init') {
@@ -171,19 +171,15 @@ ws.onmessage = function (evt) {
             setTimeout(() => awaitRefresh = false, 250)
         }
         try {
-            if (
-                (response["id"] === currentComponentId) 
-            //  || deepEqual(currentComponent, newData.result)
-            ) { return; }
+            if (response["id"] === activeComponentId) { return; }
 
-            const newData = response.result;
+            activeComponentData = response.result;
             if (newData && typeof newData === "object") {
                 Object.assign(ComponentData, newData);
                 OutputUpdate(true);
             } else {
                 OutputUpdate(false);
             }
-            currentComponent = newData.result
         } catch (e) {
             console.error("Unable to update component!");
         }
@@ -328,30 +324,3 @@ ws.onopen = () => {
         setInterval(requstComponent, 1000)
     }
 };
-
-function deepEqual(obj1, obj2) {
-    // Check if both are strictly equal
-    if (obj1 === obj2) return true;
-
-    // Check if either is null or not an object
-    if (obj1 == null || typeof obj1 !== 'object' ||
-        obj2 == null || typeof obj2 !== 'object') {
-        return false;
-    }
-
-    // Get keys of both objects
-    let keys1 = Object.keys(obj1);
-    let keys2 = Object.keys(obj2);
-
-    // Different number of keys means not equal
-    if (keys1.length !== keys2.length) return false;
-
-    // Check all keys in obj1 exist in obj2 and values are equal (recursive)
-    for (let key of keys1) {
-        if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
-            return false;
-        }
-    }
-
-    return true;
-}
