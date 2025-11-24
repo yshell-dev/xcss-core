@@ -1,4 +1,4 @@
-const AUTOREFRESH = true;
+const AUTOREFRESH = false;
 
 // --- Initial Load ---
 
@@ -27,7 +27,7 @@ const RootCssElement = document.getElementById('live-preview-root-css');
 const CompCssElement = document.getElementById('live-preview-comp-css');
 const SymClassElement = document.getElementById('live-preview-symclass');
 
-const ComponentData = {
+const activeComponent = {
     staple: "",
     summon: "",
     symclass: "",
@@ -45,7 +45,7 @@ const outputState = {
 
 
 let OutputStyle = '';
-function OutputUpdate(updateComponent = false) {
+function OutputUpdate(updateComponent = false, newComponent = activeComponent) {
     if (OutputElement.hasAttribute('style')) { OutputStyle = OutputElement.getAttribute('style') ?? OutputStyle; }
 
     if (outputState.preserveScale) {
@@ -59,20 +59,20 @@ function OutputUpdate(updateComponent = false) {
     OutputElement.setAttribute("data-live-preview-output-container-preserve", String(outputState.preserveScale))
     OutputElement.setAttribute("data-live-preview-output-container-preserve", String(outputState.preserveScale))
 
-    RootCssElement.innerText = outputState.useProjectCss ? ComponentData.rootcss : "";
-    CompCssElement.innerText = ComponentData.compcss;
+    RootCssElement.innerText = outputState.useProjectCss ? newComponent.rootcss : "";
+    CompCssElement.innerText = newComponent.compcss;
 
     if (updateComponent) {
-        const staple = (typeof ComponentData.staple === "string") ? ComponentData.staple : '';
-        const structure = (typeof ComponentData.summon === "string" && ComponentData.summon.length) ? ComponentData.summon : "[Placeholder]";
-        const selector = (typeof ComponentData.symclass === "string" && ComponentData.symclass.length) ? ComponentData.symclass : '[N/A]';
+        const staple = (typeof newComponent.staple === "string") ? newComponent.staple : '';
+        const structure = (typeof newComponent.summon === "string" && newComponent.summon.length) ? newComponent.summon : "[Placeholder]";
+        const selector = (typeof newComponent.symclass === "string" && newComponent.symclass.length) ? newComponent.symclass : '[N/A]';
 
         StapleElement.innerHTML = staple;
         OutputElement.innerHTML = structure;
         OutputElement.className = "_";
         SymClassElement.innerHTML = selector;
 
-        const attributes = ComponentData.attributes
+        const attributes = newComponent.attributes
         if (typeof attributes === "object") {
             RootMain.setAttribute("style", typeof attributes["style"] === "string" ? attributes["style"].slice(1, -1) : "")
             Object.entries(attributes).forEach(([attr, value]) => {
@@ -103,6 +103,7 @@ function OutputUpdate(updateComponent = false) {
             })
         }
     }
+    Object.assign(activeComponent, newComponent);
 }
 
 // --- Drag handle Logic ---
@@ -157,8 +158,6 @@ ws.onerror = function (e) {
 };
 
 let awaitRefresh = false;
-let activeComponentId = 0;
-let activeComponentData = ComponentData;
 ws.onmessage = function (evt) {
     const response = JSON.parse(evt.data);
     if (response.method === 'sandbox-state-set' || response.method === 'sandbox-state-init') {
@@ -171,12 +170,9 @@ ws.onmessage = function (evt) {
             setTimeout(() => awaitRefresh = false, 250)
         }
         try {
-            if (response["id"] === activeComponentId) { return; }
-
-            activeComponentData = response.result;
-            if (newData && typeof newData === "object") {
-                Object.assign(ComponentData, newData);
-                OutputUpdate(true);
+            const result = response.result;
+            if (result && typeof result === "object") {
+                OutputUpdate(true, result);
             } else {
                 OutputUpdate(false);
             }
