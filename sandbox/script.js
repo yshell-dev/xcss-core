@@ -1,3 +1,4 @@
+const AUTOREFRESH = false;
 
 // --- Initial Load ---
 
@@ -6,7 +7,6 @@ const RootMain = document.getElementById('live-preview-main');
 window.addEventListener('load', () => {
     setTimeout(() => {
         RootBody.parentElement.removeAttribute("style");
-        console.log("Removed vscode css defaults.")
     }, 100);
 });
 
@@ -157,18 +157,20 @@ ws.onerror = function (e) {
 };
 
 let awaitRefresh = false;
-let currentComponentId = 0;
+let currentComponent = ComponentData;
 ws.onmessage = function (evt) {
     const response = JSON.parse(evt.data);
     if (response.method === 'sandbox-state-set' || response.method === 'sandbox-state-init') {
         tweakIndex[response.result.key]?.apply(response.result.value);
         OutputUpdate(false);
     } else if (response.method === 'sandbox-view') {
-        if (awaitRefresh) { return }
-        awaitRefresh = true;
-        setTimeout(() => awaitRefresh = false, 250)
+        if (AUTOREFRESH){
+            if (awaitRefresh) { return }
+            awaitRefresh = true;
+            setTimeout(() => awaitRefresh = false, 250)
+        }
         try {
-            if (response["id"] === currentComponentId) return;
+            if (deepEqual(currentComponent, newData.result)) return;
 
             const newData = response.result;
             if (newData && typeof newData === "object") {
@@ -177,7 +179,7 @@ ws.onmessage = function (evt) {
             } else {
                 OutputUpdate(false);
             }
-            currentComponentId = newData["id"]
+            currentComponent = newData.result
         } catch (e) {
             console.error("Unable to update component!");
         }
@@ -318,5 +320,34 @@ ws.onopen = () => {
         tweak.Initialize();
     });
     requstComponent;
-    setInterval(requstComponent, 1000)
+    if (AUTOREFRESH){
+        setInterval(requstComponent, 1000)
+    }
 };
+
+function deepEqual(obj1, obj2) {
+    // Check if both are strictly equal
+    if (obj1 === obj2) return true;
+
+    // Check if either is null or not an object
+    if (obj1 == null || typeof obj1 !== 'object' ||
+        obj2 == null || typeof obj2 !== 'object') {
+        return false;
+    }
+
+    // Get keys of both objects
+    let keys1 = Object.keys(obj1);
+    let keys2 = Object.keys(obj2);
+
+    // Different number of keys means not equal
+    if (keys1.length !== keys2.length) return false;
+
+    // Check all keys in obj1 exist in obj2 and values are equal (recursive)
+    for (let key of keys1) {
+        if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
+            return false;
+        }
+    }
+
+    return true;
+}
