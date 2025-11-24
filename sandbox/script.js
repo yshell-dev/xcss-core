@@ -1,4 +1,4 @@
-const AUTOREFRESH = false;
+const AUTOREFRESH = true;
 
 // --- Initial Load ---
 
