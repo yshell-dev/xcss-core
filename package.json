@@ -46,20 +46,5 @@
   },
   "engines": {
     "node": ">=14.0.0"
-  },
-  "files": [
-    "scaffold/**/*",
-    "sandbox/**/*",
-    ".gitmodules",
-    ".gitignore",
-    ".npmignore",
-    "CHANGELOG.md",
-    "EULA.md",
-    "LICENSE.md",
-    "package.d.ts",
-    "package.js",
-    "package.json",
-    "README.md",
-    "RELEASE.md"
-  ]
+  }
 }
