@@ -160,7 +160,8 @@ ws.onerror = function (e) {
 let awaitRefresh = false;
 ws.onmessage = function (evt) {
     const response = JSON.parse(evt.data);
-    if (response.method === 'sandbox-state-set' || response.method === 'sandbox-state-init') {
+    if (response.method === 'server-state-set' || response.method === 'server-state-init') {
+        console.log(response)
         tweakIndex[response.result.key]?.apply(response.result.value);
         OutputUpdate(false);
     } else if (response.method === 'sandbox-view') {
@@ -207,7 +208,7 @@ class Tweak {
         if (this.element) {
             const message = JSON.stringify({
                 jsonrpc: "2.0",
-                method: 'sandbox-state-init',
+                method: 'server-state-init',
                 id: Date.now(),
                 params: {
                     key: this.key,
@@ -223,7 +224,7 @@ class Tweak {
         if (ws.readyState === WebSocket.OPEN && this.element) {
             const message = JSON.stringify({
                 jsonrpc: "2.0",
-                method: 'sandbox-state-set',
+                method: 'server-state-set',
                 id: Date.now(),
                 params: {
                     key: this.key,

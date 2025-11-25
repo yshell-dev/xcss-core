@@ -560,8 +560,8 @@ All the first order blocks of each file will have a corresponding symbolic class
 
 ```css
 .classname {
-    @--assign $class-1 $class-2 $class-1;
-    @--attach $attach-1 $attach-2;
+  @--assign $class-1 $class-2 $class-1;
+  @--attach $attach-1 $attach-2;
 }
 ```
 
@@ -914,49 +914,49 @@ body[data-loading] .$class { ... }
 <html lang="en">
 
 <head>
-	<meta charset="utf-8" />
-	<meta 
-		name="viewport"
-		content="width=device-width, initial-scale=1" 
-	/>
-	<!-- style -->
+  <meta charset="utf-8" />
+  <meta 
+    name="viewport"
+    content="width=device-width, initial-scale=1" 
+  />
+  <!-- style -->
 </head>
 
 <body 
-	data-sveltekit-preload-data="hover" 
-	class="=bg$pattern-checkerboard =$custom-pattern" 
-	_$custom-pattern="
-		--pattern-checker-bg1: #456734;
-		--pattern-checker-bg2: #2bb43d;
-		--pattern-checker-size: var(---delta-block-lg);
-	"
+  data-sveltekit-preload-data="hover" 
+  class="=bg$pattern-checkerboard =$custom-pattern" 
+  _$custom-pattern="
+    --pattern-checker-bg1: #456734;
+    --pattern-checker-bg2: #2bb43d;
+    --pattern-checker-size: var(---delta-block-lg);
+  "
 >
 
-	<staple amorphous$--container>
-		<svg xmlns="http://www.w3.org/2000/svg">
-			<defs> ... </defs>
-		</svg>
-	</staple>
+  <staple amorphous$--container>
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <defs> ... </defs>
+    </svg>
+  </staple>
 
 
-	<summon 
-		data-glass-type="liquid" 
-		amorphous$$$container="
-			~ amorphous$--container;
-			&::after {
-				filter: url(#\#glass-distortion);
-			}
-		"
-	>
-		Template
-	</summon>
+  <summon 
+    data-glass-type="liquid" 
+    amorphous$$$container="
+      ~ amorphous$--container;
+      &::after {
+        filter: url(#\#glass-distortion);
+      }
+    "
+  >
+    Template
+  </summon>
 
-	<div 
-		id="#scoped-id" 
-		data-glass-type='liquid' 
-		class="~amorphous$$$container"
-	> Content </div>
-	<!-- staple -->
+  <div 
+    id="#scoped-id" 
+    data-glass-type='liquid' 
+    class="~amorphous$$$container"
+  > Content </div>
+  <!-- staple -->
 </body>
 
 </html>
@@ -1017,11 +1017,11 @@ body[data-loading] .$class { ... }
 ## Runtime integration
 
 - No runtime integration or API/plugins required
-	- The compiler produces a static stylesheet artifact (for example `xrc/styles.css`) which can be included in your app like any other CSS file.
-	- No bundler plugin, runtime library, or client-side loader is required to consume the generated stylesheet. Add it to your HTML, static assets, or bundler's asset pipeline as you would any plain CSS file.
+- The compiler produces a static stylesheet artifact which can be included in your app like any other CSS file.
 
 ## Extensibility & contributions
 
 - The compiler binary is intentionally a closed distribution for runtime execution: contributions to the binary itself are not expected. The tool is a structural processor and does not validate or understand CSS properties or values — **it operates on document structure and symbolic classes**.
 - Extending the system: users can add CSS files to the `xtyles/libraries` folder to create custom libraries/frameworks; the six-level inheritance model allows rapid propagation of changes across a project.
 - Conditional definitions (media queries, custom at-rules, container-dependent variants, etc.) are generated using wrapper-attributes. `hashrules` provide reusable snippets for wrapper attributes.
+- Users may fork or clone repository, personalize flavours and distribute as needed.
