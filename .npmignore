@@ -3,6 +3,6 @@
 .gitignore
 .gitmodules
 
-source/bin
+source
 
 RELEASE.md
