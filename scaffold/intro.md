@@ -1,7 +1,7 @@
 # XCSS Package
 
-## End-User License Agreement (EULA)
+## Chapters
 
-By using this software, you agree to the terms and conditions outlined in the [End-User License Agreement](./EULA.md).
+1. [Documentation](#Documentation)
+2. [Customize Flavour](#Flavourize)
 
-For details, please read the full EULA document provided in this repository.

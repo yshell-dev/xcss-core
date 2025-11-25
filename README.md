@@ -1,55 +1,19 @@
 # XCSS Package
 
-## End-User License Agreement (EULA)
+## Chapters
 
-By using this software, you agree to the terms and conditions outlined in the [End-User License Agreement](./EULA.md).
-
-For details, please read the full EULA document provided in this repository.
-
----
-# Flavourize
-
-### Fork / Clone repository
-
-- Fork this repository using your preferred Git service (e.g., GitHub, GitLab, Bitbucket), or clone the repository locally if you only want to keep a local copy without sharing or collaborating.
-- Forking creates a copy in your own account for collaborative development, while cloning copies the repository directly to your local machine.
-
-### Customize Scaffold Directory
-
-- After forking, you have a scaffold directory—a basic project structure. Customize this directory by modifying or adding files and folders according to your project's needs. 
-- This might include renaming files, adding new source code files, configuration files, or assets to tailor the scaffold as a personalized foundation for your specific use case.
-
-### Personalize Sandbox Template
-
-- The sandbox template provides a predefined example environment for testing and experimentation. 
-- You can personalize it by modifying configuration files, sample code, or dependencies so that it matches the needs of your development or testing scenarios.
-
-### Update Intro File
-
-- Modify the intro.md file within the scaffold to update the introduction section of the auto-generated **README.md** file.
-- When cloning this repository, ensure you keep the existing introduction unchanged. You can add any new content you want immediately after the original introduction, without modifying or removing it.
-- This method preserves the original context and key information while allowing you to enrich the documentation with additional details.
-- After making changes, run the **package.js** script to regenerate and update the **README.md** file with the revised content.
-
-
-### Prepare Package Metadata
-
-- Before publishing, update your package.json (or equivalent manifest for your ecosystem) so it correctly describes your package.
-​- Set or review fields such as name, version, description, license, author, repository, main/exports, and files to ensure consumers get the right entry points and metadata.​
-- If your project needs a build step, define scripts like "build" and "prepublishOnly" or "prepare" so that your package is automatically built and validated before it is packed and published
-
-### Keep it Private or Public, Publish in Your Preferred Registry
-
-- Decide whether to keep your forked repository private—in which case, access is restricted to you and collaborators—or public, allowing open community access. 
-- Additionally, if your project includes packages or modules, you can publish them to registries like npm or GitHub Packages to facilitate easy sharing and installation by others.
-
-### Maintanance
-
-- Regularly pull updates from the original source repository to keep your fork in sync with the latest changes and binaries. This involves adding the original repo as an upstream remote and merging upstream changes into your local copy.
-- Update your published package versions in your preferred registry to distribute fixes and new features, ensuring users get the latest stable releases.
+1. [Documentation](#Documentation)
+2. [Customize Flavour](#Flavourize)
 
 ---
 # Documentation
+
+## End-User License Agreement (EULA)
+
+By using this software, you agree to the terms and conditions outlined in the [End-User License Agreement](./EULA.md).
+For details, please read the full EULA document provided in this repository.
+
+---
 
 ## What is XCSS?
 
@@ -62,32 +26,32 @@ By focusing on modular style blocks, logical constraint-based syntax, and automa
 XCSS strikes a careful balance between raw flexibility and developer experience without sacrificing either. It:
 
 - Enables fully customizable framework creation with minimal initial setup, reducing context switching between CSS and HTML.
-
 - Resolves style dependencies and cascading order natively at build time, minimizing manual overrides and conflicts.
-
 - Supports reusable modular blocks that grow with your application, eliminating brittle selectors and tangled overrides.
-
 - Delivers production-ready optimized builds with debloated, dependency-aware styles for faster and cleaner deployment.
-
 - Acts as a robust kernel platform, giving you complete control and transparency while providing structural best practices and optimization out of the box.
 
 In short, XCSS is the essential, extensible core upon which efficient, scalable, and maintainable CSS frameworks can be built—offering the power and performance that modern design systems and large-scale projects demand.
 
 ## Sections
 
-0. [Installation](documentation/0-installation)
-1. [Command Line](documentation/1-command)
-2. [Example Preview](documentation/2-example)
-3. [Directory](documentation/3-directory)
-4. [Composing Libraries](documentation/4-libraries)
-5. [Operators](documentation/5-operators)
-6. [Inline Composition](documentation/6-composing)
-7. [Custom HTML Tags](documentation/7-custom-tags)
-8. [Appendix](documentation/8-appendix)
+0. [Installation](http://www.xcss.io/documentation/0-installation)
+1. [Command Line](http://www.xcss.io/documentation/1-command)
+2. [Example Preview](http://www.xcss.io/documentation/2-example)
+3. [Directory](http://www.xcss.io/documentation/3-directory)
+4. [Composing Libraries](http://www.xcss.io/documentation/4-libraries)
+5. [Operators](http://www.xcss.io/documentation/5-operators)
+6. [Inline Composition](http://www.xcss.io/documentation/6-composing)
+7. [Custom HTML Tags](http://www.xcss.io/documentation/7-custom-tags)
+8. [Appendix](http://www.xcss.io/documentation/8-appendix)
 
 # 0. Installation
 
-## Global Installation
+For using XCSS in non-JavaScript based codebases, install XCSS globally. After that, the usage remains the same as in other environments.
+
+## Using NPM
+
+### Global Installation
 
 Install XCSS Core globally with:
 
@@ -101,7 +65,7 @@ Run XCSS commands directly:
 xcss {command}
 ```
 
-## Local Installation
+### Local Installation
 
 Install XCSS Core as a development dependency locally:
 
@@ -112,32 +76,44 @@ npm install --save-dev xcss-core
 Run XCSS commands locally using npm scripts:
 
 ```bash
-npm run xcss {command}
+npx xcss {command}
 ```
 # 1. Command Line
 
-- `init`
-  - Sets up the project by importing the configuration folder, and makes necessary changes to `configure.jsonc`.
-  - If run inside an already initialized directory, it will create the necessary sub-folders as defined.
+### `init` : Initialize and Healthcheck
 
-- `debug` : Compiles with full verbosity and traceability
-  - Verbose output
-  - Traceable class-names and properties.
-  - Larger output size
-  - Use `debug -w` for live compilation with identical output.
+- Sets up the project by importing the configuration folder, and makes necessary changes to `configure.jsonc`.
+- If run inside an already initialized directory, it will create the necessary sub-folders as defined.
 
-- `preview` : Optimized compilation for lightweight builds:
-  - Hashed class-names (≥ 3 characters)
-  - Minified CSS.
-  - Partial dependency resolution
-  - Optimized for minimal class footprint
-  - Use `preview -w` for live compilation.
+### `debug` : Compiles with full verbosity and traceability
 
-- `publish {key}` : 
-  - Requires a valid key and active internet connection
-  - Executes only if no compilation errors are present
-  - Falls back to the `preview` build if conditions aren't met
-  - **Recommended for production-grade enterprise deployments**
+- Verbose output
+- Traceable class-names and properties.
+- Larger output size
+- Use `debug -w` for live compilation with identical output.
+
+### `preview` : Optimized compilation for lightweight builds:
+
+- Hashed class-names (≥ 3 characters)
+- Minified CSS.
+- Partial dependency resolution
+- Optimized for minimal class footprint
+- Use `preview -w` for live compilation.
+
+## Developer Commands
+
+### `server` : Starts language server
+
+- Helps in active language assistance in editors.
+- Start server, use `help` for available command list.
+- Used by extension developers.
+
+## Experimental Commands
+
+### `iamai` : Communication bridge for AI Agents
+
+- Helps in context aware styling by AI Agnets.
+- This command is a combination of `preview` and `server` commands.
 # 2. Example Demo
 
 ## Input
@@ -1025,3 +1001,45 @@ body[data-loading] .$class { ... }
 - Extending the system: users can add CSS files to the `xtyles/libraries` folder to create custom libraries/frameworks; the six-level inheritance model allows rapid propagation of changes across a project.
 - Conditional definitions (media queries, custom at-rules, container-dependent variants, etc.) are generated using wrapper-attributes. `hashrules` provide reusable snippets for wrapper attributes.
 - Users may fork or clone the repository, personalize their own variants, and distribute them as needed. For detailed guidance on customization, refer to the Flavourize documentation. Be sure to review the EULA for any usage constraints and legal requirements associated with redistribution and modification.
+
+---
+# Flavourize
+
+### Fork / Clone repository
+
+- Fork this repository using your preferred Git service (e.g., GitHub, GitLab, Bitbucket), or clone the repository locally if you only want to keep a local copy without sharing or collaborating.
+- Forking creates a copy in your own account for collaborative development, while cloning copies the repository directly to your local machine.
+
+### Customize Scaffold Directory
+
+- After forking, you have a scaffold directory—a basic project structure. Customize this directory by modifying or adding files and folders according to your project's needs. 
+- This might include renaming files, adding new source code files, configuration files, or assets to tailor the scaffold as a personalized foundation for your specific use case.
+
+### Personalize Sandbox Template
+
+- The sandbox template provides a predefined example environment for testing and experimentation. 
+- You can personalize it by modifying configuration files, sample code, or dependencies so that it matches the needs of your development or testing scenarios.
+
+### Update Intro File
+
+- Modify the intro.md file within the scaffold to update the introduction section of the auto-generated **README.md** file.
+- When cloning this repository, ensure you keep the existing introduction unchanged. You can add any new content you want immediately after the original introduction, without modifying or removing it.
+- This method preserves the original context and key information while allowing you to enrich the documentation with additional details.
+- After making changes, run the **package.js** script to regenerate and update the **README.md** file with the revised content.
+
+
+### Prepare Package Metadata
+
+- Before publishing, update your package.json (or equivalent manifest for your ecosystem) so it correctly describes your package.
+​- Set or review fields such as name, version, description, license, author, repository, main/exports, and files to ensure consumers get the right entry points and metadata.​
+- If your project needs a build step, define scripts like "build" and "prepublishOnly" or "prepare" so that your package is automatically built and validated before it is packed and published
+
+### Keep it Private or Public, Publish in Your Preferred Registry
+
+- Decide whether to keep your forked repository private—in which case, access is restricted to you and collaborators—or public, allowing open community access. 
+- Additionally, if your project includes packages or modules, you can publish them to registries like npm or GitHub Packages to facilitate easy sharing and installation by others.
+
+### Maintanance
+
+- Regularly pull updates from the original source repository to keep your fork in sync with the latest changes and binaries. This involves adding the original repo as an upstream remote and merging upstream changes into your local copy.
+- Update your published package versions in your preferred registry to distribute fixes and new features, ensuring users get the latest stable releases.

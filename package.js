@@ -43,9 +43,9 @@ const binPath = path.resolve(__dirbin, __binfile);
 // console.log({ __filename, __dirname, __system, __binfile, assetUrl, binPath });
 
 function syncMarkdown() {
-    let readme = fs.readFileSync(path.resolve(__diroot, "scaffold", "intro.md"));
-    readme += "\n---\n" + fs.readFileSync(path.resolve(__dirsrc, "FLAVOUR.md"))
-    readme += "\n---\n" + fs.readFileSync(path.resolve(__dirsrc, "README.md"));
+    let readme = stringfs.readFileSync(path.resolve(__diroot, "scaffold", "intro.md")).toString().trim();
+    readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__dirsrc, "README.md")).toString().trim();
+    readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__dirsrc, "FLAVOUR.md")).toString().trim();
     fs.writeFileSync(path.resolve(__diroot, "README.md"), readme)
 }
 
