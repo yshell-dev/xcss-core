@@ -201,31 +201,31 @@ _$custom-pattern="
     background-image: linear-gradient(#ffffff 0.9px, transparent 0.9px), 
       linear-gradient(to right, oklab(100% 0 -0.00011) 0.9px, #cacaca 1px);
   " data-amorphous-type="liquid" amorphous$$$container="
-		~ amorphous$--container ;
-		= p-12 m-0 border-0 d-flex align-center justify-center position-fixed;
-		= tx$decoration-none isolate an$transition-all an$animation-delay-500;
-		animation: .5s fade-in forwards;
-		&:hover {
-			= tf$scale-105;
-		}
-		&::after {
-			= position-absolute inset-0 layer-neg-2 radius-16 tx$content-clear;
-			filter: url(#\#glass-distortion);
-		}
-		&::before {
-			= position-absolute inset-0 layer-neg-1 radius-16 tx$content-clear;
-			box-shadow: inset 0 0 15px -5px #ffffffec;
-		}
-		&[data-glass-type=]& {
-			&['liquid'] {
-				&::after { backdrop-filter: blur(.5px); }
-				&::before { background-color: #e7fffa73; }
-			}
-			&['frosted'] {
-				&::after { backdrop-filter: blur(1px); }
-				&::before { background-color: lab(93.8 1 -5.7 / 0.713); }
-			}
-		}
+    ~ amorphous$--container ;
+    = p-12 m-0 border-0 d-flex align-center justify-center position-fixed;
+    = tx$decoration-none isolate an$transition-all an$animation-delay-500;
+    animation: .5s fade-in forwards;
+    &:hover {
+      = tf$scale-105;
+    }
+    &::after {
+      = position-absolute inset-0 layer-neg-2 radius-16 tx$content-clear;
+      filter: url(#\#glass-distortion);
+    }
+    &::before {
+      = position-absolute inset-0 layer-neg-1 radius-16 tx$content-clear;
+      box-shadow: inset 0 0 15px -5px #ffffffec;
+    }
+    &[data-glass-type=]& {
+      &['liquid'] {
+        &::after { backdrop-filter: blur(.5px); }
+        &::before { background-color: #e7fffa73; }
+      }
+      &['frosted'] {
+        &::after { backdrop-filter: blur(1px); }
+        &::before { background-color: lab(93.8 1 -5.7 / 0.713); }
+      }
+    }
   ">
     Template
   </summon>
