@@ -30,7 +30,7 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
 
-      - run: npm run package
+      - run: npm run bundle
 
       - name: Publish package to npm
         id: npm-publish
