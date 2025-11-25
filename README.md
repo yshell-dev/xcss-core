@@ -6,6 +6,7 @@
 2. [Customize Flavour](#Flavourize)
 
 ---
+
 # Documentation
 
 ## End-User License Agreement (EULA)
@@ -16,6 +17,8 @@ For details, please read the full EULA document provided in this repository.
 ---
 
 ## What is XCSS?
+
+![Preview](https://github.com/yshell-dev/xcss-vscode/raw/HEAD/preview.png)
 
 XCSS is a constraint-driven CSS build-time kernel designed to be the foundational engine for building custom CSS frameworks. Rather than being a traditional CSS framework loaded with predefined classes, XCSS provides a powerful structural abstraction that preserves the full flexibility of vanilla CSS while adding native dependency management and modular composition. It works seamlessly across any text-based environment, is framework agnostic, and integrates effortlessly with existing design systems and token libraries.
 
@@ -1003,6 +1006,7 @@ body[data-loading] .$class { ... }
 - Users may fork or clone the repository, personalize their own variants, and distribute them as needed. For detailed guidance on customization, refer to the Flavourize documentation. Be sure to review the EULA for any usage constraints and legal requirements associated with redistribution and modification.
 
 ---
+
 # Flavourize
 
 ### Fork / Clone repository
