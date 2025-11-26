@@ -819,13 +819,13 @@ body[data-loading] .$class { ... }
 - Unoptimized cascading order, and respective classnames.
 - Classname is enumered hash followed by cascade position index.
 - **Scattered Classes:**
-  - Format: `~{classname}`
+  - Format: `~{classname}_{hash}`
   - Example: `~scatter-class` 
 - **Ordered Classes:**
-  - Format: `!{hash}_{cascade-counter}`
-  - Example: `!Ordered-class_23` 
+  - Format: `!{classname}_{hash}-{cascade-counter}`
+  - Example: `!ordered-class_g3-134` 
 - **Final Classes:**
-  - Format: `={classname}`
+  - Format: `={classname}_{hash}`
   - Example: `=final-class` 
 
 ### `publish`

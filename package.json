@@ -40,6 +40,7 @@
   "bugs": {
     "url": "https://github.com/yshelldev/xcss-package/issues"
   },
+  "contributing": "https://github.com/yshelldev/xcss-package/blob/main/CONTRIBUTING.md",
   "funding": {
     "type": "github",
     "url": "https://github.com/sponsors/yshelldev"
