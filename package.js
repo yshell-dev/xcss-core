@@ -31,7 +31,7 @@ const __dirsrc = path.resolve(__diroot, 'source');
 const __dirbin = path.resolve(__dirsrc, 'bin');
 if (!__binfile) { console.error(`Unsupported platform or architecture: ${__system}`); process.exit(1); }
 
-const soure_repo = "https://github.com/yshell-dev/xcss-package"
+const soure_repo = "https://github.com/yshelldev/xcss-package"
 const packageJsonPath = path.join(__diroot, 'package.json');
 const packageData = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 const currentAssetUrl = `${soure_repo}/releases/download/v${packageData.version}/${__binfile}`;
