@@ -25,7 +25,7 @@
     // suffix for styles replacement tags 
     // EXPERIMENTAL
     "reload-period": 0
-    // rebuild interval in seconds, (>= 10s)
+    // rebuild interval in seconds, (0 => no reload)
   },
   "environment": "browser"
 }
