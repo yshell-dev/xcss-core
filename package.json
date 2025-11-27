@@ -1,5 +1,5 @@
 {
-  "name": "xcss-core",
+  "name": "xcss-package",
   "description": "A powerful CSS kernel for building customized, scalable, and high-performance frontend frameworks. Seamlessly blend the raw potential of CSS with the ease of pre-made utilities, managed by a core orchestrator that optimizes HTML and JavaScript performance for modern web applications.",
   "version": "0.1.8",
   "main": "package.js",

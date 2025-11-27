@@ -1,5 +1,7 @@
 # XCSS Package
 
+> The releases in this repository are not covered by the agreements of this package. It is solely used by XCSS Source for distribution purposes.
+
 ## Chapters
 
 1. [Documentation](#Documentation)
@@ -56,10 +58,10 @@ For using XCSS in non-JavaScript based codebases, install XCSS globally. After t
 
 ### Global Installation
 
-Install XCSS Core globally with:
+Install XCSS Package globally with:
 
 ```bash
-npm install -g xcss-core
+npm install -g xcss-package
 ```
 
 Run XCSS commands directly:
@@ -70,10 +72,10 @@ xcss {command}
 
 ### Local Installation
 
-Install XCSS Core as a development dependency locally:
+Install XCSS Package as a development dependency locally:
 
 ```bash
-npm install --save-dev xcss-core
+npm install --save-dev xcss-package
 ```
 
 Run XCSS commands locally using npm scripts:
