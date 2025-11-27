@@ -9,6 +9,10 @@ on:
     types: [trigger-publish]
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -25,10 +29,5 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - run: npm run bundle
-
-      - name: Publish package to npm
-        id: npm-publish
-        working-directory: .
-        run: |
-          npm pkg fix
-          npm publish --access public
+      - run: npm pkg fix
+      - run: npm publish --access public
