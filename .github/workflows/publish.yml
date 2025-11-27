@@ -26,4 +26,9 @@ jobs:
 
       - run: npm run bundle
       - run: npm pkg fix
-      - run: npm publish
+
+      - name: Publish package to npm
+        working-directory: .
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.XCSS_NPM }}
