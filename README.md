@@ -1,6 +1,6 @@
 # XCSS Package
 
-> The releases in this repository are not covered by the agreements of this package. It is solely used by XCSS Compiler for distribution purposes.
+> The releases in this repository are not covered by the agreements of this package. It is solely used by XCSS Compiler distribution purposes.
 
 ## Chapters
 
@@ -58,10 +58,10 @@ For using XCSS in non-JavaScript based codebases, install XCSS globally. After t
 
 ### Global Installation
 
-Install XCSS Core globally with:
+Install XCSS Package globally with:
 
 ```bash
-npm install -g xcss-core
+npm install -g xcss-package
 ```
 
 Run XCSS commands directly:
@@ -72,10 +72,10 @@ xcss {command}
 
 ### Local Installation
 
-Install XCSS Core as a development dependency locally:
+Install XCSS Package as a development dependency locally:
 
 ```bash
-npm install --save-dev xcss-core
+npm install --save-dev xcss-package
 ```
 
 Run XCSS commands locally using npm scripts:
@@ -1011,6 +1011,8 @@ body[data-loading] .$class { ... }
 
 # Flavourize
 
+> Template Repo: [XCSS Package](https://github.com/yshelldev/xcss-package)
+
 ### Fork / Clone repository
 
 - Fork this repository using your preferred Git service (e.g., GitHub, GitLab, Bitbucket), or clone the repository locally if you only want to keep a local copy without sharing or collaborating.
@@ -1032,7 +1034,6 @@ body[data-loading] .$class { ... }
 - When cloning this repository, ensure you keep the existing introduction unchanged. You can add any new content you want immediately after the original introduction, without modifying or removing it.
 - This method preserves the original context and key information while allowing you to enrich the documentation with additional details.
 - After making changes, run the **package.js** script to regenerate and update the **README.md** file with the revised content.
-
 
 ### Prepare Package Metadata
 
