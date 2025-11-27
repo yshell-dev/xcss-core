@@ -27,7 +27,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __system = `${process.platform}-${normalizeArch(process.arch)}`;
 const __binfile = platformBinMap[__system];
 const __diroot = path.resolve(__filename, '..');
-const __dirsrc = path.resolve(__diroot, 'source');
+const __dirsrc = path.resolve(__diroot, 'compiler');
 const __dirbin = path.resolve(__dirsrc, 'bin');
 if (!__binfile) { console.error(`Unsupported platform or architecture: ${__system}`); process.exit(1); }
 

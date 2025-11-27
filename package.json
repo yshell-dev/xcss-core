@@ -9,14 +9,14 @@
   "type": "module",
   "bin": {
     "xcss": "./package.js",
-    "xdev": "./source/scripts/live.sh"
+    "xdev": "./compiler/scripts/live.sh"
   },
   "scripts": {
     "install": "chmod +x ./package.js && ./package.js",
     "profile": "go install github.com/moderato-app/live-pprof@latest && live-pprof",
     "lint": "cd source && golangci-lint run && cd ..",
-    "build": "cd source && chmod +x ./scripts/build.sh && ./scripts/build.sh && cd ..",
-    "stats": "chmod +x ./source/scripts/stats.sh && ./source/scripts/stats.sh source",
+    "build": "cd compiler && chmod +x ./scripts/build.sh && ./scripts/build.sh && cd ..",
+    "stats": "chmod +x ./compiler/scripts/stats.sh && ./compiler/scripts/stats.sh compiler",
     "bundle": "node package.js && npm pack --dry-run"
   },
   "repository": {
