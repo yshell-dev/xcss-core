@@ -38,5 +38,3 @@ jobs:
         run: |
           npm pkg fix
           npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.XCSS_NPM_TOKEN }}
