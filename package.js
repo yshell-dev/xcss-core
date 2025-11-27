@@ -34,7 +34,15 @@ if (!__binfile) { console.error(`Unsupported platform or architecture: ${__syste
 const soure_repo = "https://github.com/yshelldev/xcss-package"
 const packageJsonPath = path.join(__diroot, 'package.json');
 const packageData = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-const currentAssetUrl = `${soure_repo}/releases/download/v${packageData.version}/${__binfile}`;
+let version = "";
+if (packageData.name === "xcss-package") {
+    version = packageData["version"]
+    packageData["compiler-version"] = version
+    fs.writeFileSync(packageJsonPath, JSON.stringify(packageData, " ","  "))
+} else {
+    version = packageData["compiler-version"]
+}
+const currentAssetUrl = `${soure_repo}/releases/download/v${version}/${__binfile}`;
 const latestAssetUrl = `${soure_repo}/releases/download/latest/${__binfile}`;
 
 const devMode = fs.existsSync(path.resolve(__dirsrc, "scripts"));
