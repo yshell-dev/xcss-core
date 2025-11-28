@@ -1,11 +1,11 @@
 {
   "name": "xcss-package",
   "description": "A powerful CSS kernel for building customized, scalable, and high-performance frontend frameworks. Seamlessly blend the raw potential of CSS with the ease of pre-made utilities, managed by a core orchestrator that optimizes HTML and JavaScript performance for modern web applications.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "package.js",
   "exports": "./package.js",
   "typings": "package.d.ts",
-  "compiler-version": "0.0",
+  "compiler": "0.0",
   "bin": {
     "xcss": "./package.js",
     "xdev": "./compiler/scripts/live.sh"

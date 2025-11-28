@@ -37,10 +37,10 @@ const packageData = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 let version = "";
 if (packageData.name === "xcss-package") {
     version = packageData["version"].split(".").slice(0, 2).join(".")
-    packageData["compiler-version"] = version
+    packageData["compiler"] = version
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageData, " ", "  "))
 } else {
-    version = packageData["compiler-version"]
+    version = packageData["compiler"]
 }
 const currentAssetUrl = `${soure_repo}/releases/download/v${version}/${__binfile}`;
 const latestAssetUrl = `${soure_repo}/releases/download/latest/${__binfile}`;
