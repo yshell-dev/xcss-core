@@ -3,7 +3,7 @@
 import fs from 'fs';
 import https from 'https';
 
-export function DownloadBinary(url, dests = []) {
+function Download(url, dests = []) {
     console.log("Source: " + url);
     return new Promise((resolve, reject) => {
         let parsedUrl;
@@ -18,7 +18,7 @@ export function DownloadBinary(url, dests = []) {
             const { statusCode, headers } = res;
             if ([301, 302, 307, 308].includes(statusCode) && headers.location) {
                 // Follow redirect
-                DownloadBinary(headers.location, dests).then(resolve).catch(reject);
+                Download(headers.location, dests).then(resolve).catch(reject);
                 res.destroy();
                 return;
             }
@@ -48,4 +48,27 @@ export function DownloadBinary(url, dests = []) {
             });
         }).on('error', reject);
     });
+}
+
+export async function TryDownloadingUrls(URLs=[]) {
+    if (!fs.existsSync(binPath)) {
+        console.error('Reinstalling binary.');
+        if (!fs.existsSync(__bindir)) {
+            fs.mkdirSync(__bindir, { recursive: true });
+        }
+
+        for (const url of URLs) {
+            try {
+                console.error('\nAttempting Url: ' + url);
+                await Download(url, [binPath]);
+            } catch (error) {
+                console.error(`Failed to download from URL: ${error.message}`);
+                continue
+            }
+            if (process.platform !== 'win32') {
+                fs.chmodSync(binPath, 0o755);
+            }
+            break;
+        }
+    }
 }

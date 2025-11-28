@@ -5,7 +5,7 @@ import path from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { FlavourModify } from './flavour.js';
-import { DownloadBinary } from './binary.js';
+import { TryDownloadingUrls } from './binary.js';
 
 const platformBinMap = {
     'win32-386': 'windows-386.exe',
@@ -36,21 +36,27 @@ const soure_repo = "https://github.com/yshelldev/xcss-package"
 const packageJsonPath = path.join(__package, 'package.json');
 const packageData = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 const UpdateRootPackage = () => fs.writeFileSync(packageJsonPath, JSON.stringify(packageData, " ", "  "))
+
 let version = "";
 if (packageData.name === "xcss-package") {
-    version = packageData["version"].split(".").slice(0, 2).join(".")
+    version = packageData["version"]
     packageData["compilerVersion"] = version
     UpdateRootPackage();
-} else {
-    version = packageData["compilerVersion"]
-}
-const currentAssetUrl = `${soure_repo}/releases/download/v${version}/${__binfile}`;
-const latestAssetUrl = `${soure_repo}/releases/download/latest/${__binfile}`;
+} else { version = packageData["compilerVersion"] }
+
+const patchTag = version;
+const minorTag = version.split(".").slice(0, 2).join(".");
+const majorTag = version.split(".")[0];
+
+const patchTagUrl = `${soure_repo}/releases/download/v${patchTag}/${__binfile}`;
+const minorTagUrl = `${soure_repo}/releases/download/v${minorTag}/${__binfile}`;
+const majorTagUrl = `${soure_repo}/releases/download/v${majorTag}/${__binfile}`;
+const latestTagUrl = `${soure_repo}/releases/download/latest/${__binfile}`;
+const DownloadUrls = [patchTagUrl, minorTagUrl, majorTagUrl, latestTagUrl]
 
 const devMode = fs.existsSync(path.resolve(__compiler, "scripts"));
 const devPath = path.resolve(__compiler, "scripts", "live.sh");
 const binPath = path.resolve(__bindir, __binfile);
-// console.log({ __filename, __dirname, __system, __binfile, assetUrl, binPath });
 
 function syncMarkdown() {
     let readme = fs.readFileSync(path.resolve(__package, "execute", "index.md")).toString().trim();
@@ -59,41 +65,10 @@ function syncMarkdown() {
     fs.writeFileSync(path.resolve(__package, "README.md"), readme)
 }
 
-async function binUpgrade(args = []) {
-    const fallbackAssetUrl = latestAssetUrl
-    if (!fs.existsSync(binPath) || args[0] === "reinstall") {
-        console.error('Reinstalling binary.');
-        if (!fs.existsSync(__bindir)) {
-            fs.mkdirSync(__bindir, { recursive: true });
-        }
-        try {
-            await DownloadBinary(currentAssetUrl, [binPath]);
-        } catch (error) {
-            console.error(`Failed to download from first URL: ${error.message}`);
-            console.error('Trying second binary URL...');
-            // Attempt to download from a fallback URL (assumed here as fallbackAssetUrl)
-            await DownloadBinary(fallbackAssetUrl, [binPath]);
-        }
-        if (process.platform !== 'win32') {
-            fs.chmodSync(binPath, 0o755);
-        }
-    }
-    if (!fs.existsSync(binPath) || args[0] === "upgrade") {
-        console.error('Upgrading to latest binary.');
-        if (!fs.existsSync(__bindir)) {
-            fs.mkdirSync(__bindir, { recursive: true });
-        }
-        await DownloadBinary(latestAssetUrl, [binPath]);
-        if (process.platform !== 'win32') {
-            fs.chmodSync(binPath, 0o755);
-        }
-    }
-}
-
 export async function RunCommand(args = []) {
     try {
         args = args.length ? args : process.argv.slice(2);
-        await binUpgrade(args);
+        await TryDownloadingUrls(DownloadUrls);
         if (args.length === 2 && args[0] === "flavourize") {
             FlavourModify(args[1])
         }
