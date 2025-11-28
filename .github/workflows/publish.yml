@@ -17,9 +17,9 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: production
     if: github.ref == 'refs/heads/main'
     steps:
-
       - uses: actions/checkout@v4
 
       - name: Sync scaffold submodules only
@@ -30,8 +30,7 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-          
+
       - run: npm run bundle
       - run: npm pkg fix
       - run: npm publish --access public
-          
