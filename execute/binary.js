@@ -2,6 +2,7 @@
 
 import fs from 'fs';
 import https from 'https';
+import path from 'path';
 
 function Download(url, dests = []) {
     console.log("Source: " + url);
@@ -50,23 +51,24 @@ function Download(url, dests = []) {
     });
 }
 
-export async function TryDownloadingUrls(URLs=[]) {
-    if (!fs.existsSync(binPath)) {
+export async function TryDownloadingUrls(Destination, URLs=[]) {
+    if (!fs.existsSync(Destination)) {
         console.error('Reinstalling binary.');
-        if (!fs.existsSync(__bindir)) {
-            fs.mkdirSync(__bindir, { recursive: true });
+        const dir = path.dirname(Destination)
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
         }
 
         for (const url of URLs) {
             try {
                 console.error('\nAttempting Url: ' + url);
-                await Download(url, [binPath]);
+                await Download(url, [Destination]);
             } catch (error) {
                 console.error(`Failed to download from URL: ${error.message}`);
                 continue
             }
             if (process.platform !== 'win32') {
-                fs.chmodSync(binPath, 0o755);
+                fs.chmodSync(Destination, 0o755);
             }
             break;
         }

@@ -29,6 +29,7 @@ const __system = `${process.platform}-${normalizeArch(process.arch)}`;
 const __binfile = platformBinMap[__system];
 const __package = path.resolve(__filename, '..', '..');
 const __compiler = path.resolve(__package, 'compiler');
+const __scaffold = path.resolve(__package, 'scaffold');
 const __bindir = path.resolve(__compiler, 'bin');
 if (!__binfile) { console.error(`Unsupported platform or architecture: ${__system}`); process.exit(1); }
 
@@ -61,14 +62,77 @@ const binPath = path.resolve(__bindir, __binfile);
 function syncMarkdown() {
     let readme = fs.readFileSync(path.resolve(__package, "execute", "index.md")).toString().trim();
     readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__compiler, "README.md")).toString().trim();
-    readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__compiler, "FLAVOUR.md")).toString().trim();
+    readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__scaffold, "README.md")).toString().trim();
     fs.writeFileSync(path.resolve(__package, "README.md"), readme)
+}
+
+export function FlavourModify(flavour) {
+    try {
+        // Validate input silently
+        if (!flavour || typeof flavour !== 'string') {
+            return false;
+        }
+
+        // Build path
+        const flavourPackagePath = path.join(__package, '..', flavour, 'package.json');
+
+        // Check if file exists
+        if (!fs.existsSync(flavourPackagePath)) {
+            return false;
+        }
+
+        // Read file
+        const data = fs.readFileSync(flavourPackagePath, 'utf8');
+
+        // Parse JSON silently
+        let flavourData;
+        try {
+            flavourData = JSON.parse(data);
+        } catch {
+            return false;
+        }
+
+        // Validate flavour field
+        if (!flavourData.configs) {
+            return false;
+        }
+
+        // Merge flavours safely
+        if (!packageData.flavour) {
+            packageData.flavour = {};
+        }
+
+        const packageMeta = packageData.flavour;
+        const flavourMeta = flavourData.configs;
+
+        if (!(typeof packageMeta === "object" && typeof flavourMeta === "object")) {
+            return false
+        }
+
+        Object.keys(packageMeta).forEach((k) => {
+            if (typeof packageMeta[k] === typeof flavourMeta[k]) {
+                packageMeta[k] = flavourMeta[k];
+            }
+        })
+
+        // Update package silently
+        try {
+            UpdateRootPackage();
+        } catch {
+            return false;
+        }
+
+        return true;
+
+    } catch {
+        return false;
+    }
 }
 
 export async function RunCommand(args = []) {
     try {
         args = args.length ? args : process.argv.slice(2);
-        await TryDownloadingUrls(DownloadUrls);
+        await TryDownloadingUrls(binPath, DownloadUrls);
         if (args.length === 2 && args[0] === "flavourize") {
             FlavourModify(args[1])
         }
