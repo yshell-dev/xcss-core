@@ -1,3 +1,6 @@
 [submodule "compiler"]
 	path = compiler
 	url = https://github.com/yshelldev/xcss-compiler.git
+[submodule "scaffold"]
+	path = scaffold
+	url = https://github.com/yshelldev/xcss-scaffold.git
