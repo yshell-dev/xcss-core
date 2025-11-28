@@ -2,18 +2,17 @@
   "name": "xcss-package",
   "description": "A powerful CSS kernel for building customized, scalable, and high-performance frontend frameworks. Seamlessly blend the raw potential of CSS with the ease of pre-made utilities, managed by a core orchestrator that optimizes HTML and JavaScript performance for modern web applications.",
   "version": "0.0.3",
+  "compilerVersion": "0.0",
   "main": "./execute/index.js",
   "types": "./execute/index.d.ts",
   "exports": "./execute/index.js",
   "typings": "./execute/index.d.ts",
-  "configs": {
-    "compiler": "0.0",
-    "flavour": "",
-    "redirect": {
-      "blueprint": "",
-      "libraries": "",
-      "sandbox": ""
-    }
+  "flavour": {
+    "name": "",
+    "version": "",
+    "sandbox": "",
+    "blueprint": "",
+    "libraries": ""
   },
   "bin": {
     "xcss": "./execute/index.js",
@@ -45,6 +44,7 @@
     "url": "https://www.yshell.dev"
   },
   "license": "MIT",
+  "licenseFile": "LICENSE",
   "homepage": "https://www.xcss.io",
   "bugs": {
     "url": "https://github.com/yshelldev/xcss-package/issues"

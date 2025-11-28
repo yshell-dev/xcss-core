@@ -6,29 +6,34 @@ This End User License Agreement ("EULA") governs your use of the Package ("Packa
 
 When redistributing the Package, you must include this EULA and the full text of the MIT License unchanged in all copies or substantial portions of the Package.
 
-## 2. License for XCSS Package
+## 2. License for XCSS Package, ( `./compiler` )
 
-The Package itself, including all associated source code and assets outside the embedded `./source` folder, is licensed under the MIT License. This permits free use, modification, distribution, and private or commercial use under the terms of the MIT License.
+The XCSS Package—excluding the `./compiler` directory; is licensed under the MIT License, allowing free use, modification, distribution, and commercial/private use.
 
-## 3. Embedded `./source` Folder
+- `./scaffold` directory is sourced from a separate MIT-licensed repository.
+- `./compiler` directory has its own distinct licensing terms (see its documentation).
 
-The Package includes an embedded folder called `./source` which contains a source executable. This folder is distributed under its own documentation, privacy, licensing, and terms specific to its contents.
+> **Summary:** MIT License applies to all package code and assets except ./compiler.
+
+## 3. Embedded `./compiler` Folder
+
+The Package includes an embedded folder called `./compiler` which contains a **compiler executable**. This folder is distributed under its own documentation, privacy, licensing, and terms specific to its contents.
 
 ### 3.1 Alternate Documentation
 
-The `./source` folder includes its own documentation files which supersede the Package's main documentation for any components or scripts contained therein. Users should refer to those documents for usage, build instructions, and contribution guidelines specific to the npm package.
+The `./compiler` folder includes its own documentation files which supersede the Package's main documentation for any components or scripts contained therein. Users should refer to those documents for usage, build instructions, and contribution guidelines specific to the npm package.
 
-### 3.2 Licensing of `./source`
+### 3.2 Licensing of `./compiler`
 
-The `./source` folder may be subject to a different license than the MIT License applied to the core Package. It is your responsibility to review and comply with the license terms provided within the `./source` folder before using, modifying, or distributing its contents.
+The `./compiler` folder may be licensed differently than the MIT License that applies to the rest of the Package. Users are responsible for reviewing and complying with the license terms effective for `./compiler` prior to using, modifying, or distributing it.
 
 ## 4. Disclaimer of Warranty
 
-The Package and the contents of the `./source` folder are provided "as is" without any warranty, express or implied, including but not limited to fitness for a particular purpose or non-infringement.
+The Package and the contents of the `./compiler` folder are provided "as is" without any warranty, express or implied, including but not limited to fitness for a particular purpose or non-infringement.
 
 ## 5. Limitation of Liability
 
-The authors or copyright holders shall not be liable for any damages arising from the use or inability to use the Package or the `./source` folder contents, including direct, indirect, incidental, special, or consequential damages.
+The authors or copyright holders shall not be liable for any damages arising from the use or inability to use the Package or the `./compiler` folder contents, including direct, indirect, incidental, special, or consequential damages.
 
 <!-- You may add additional terms after this comment in case of redistribution, without contradicting all the above terms -->
 

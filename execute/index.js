@@ -2,9 +2,10 @@
 
 import fs from 'fs';
 import path from 'path';
-import https from 'https';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
+import { FlavourModify } from './flavour.js';
+import { DownloadBinary } from './binary.js';
 
 const platformBinMap = {
     'win32-386': 'windows-386.exe',
@@ -26,99 +27,52 @@ function normalizeArch(arch) {
 const __filename = fileURLToPath(import.meta.url);
 const __system = `${process.platform}-${normalizeArch(process.arch)}`;
 const __binfile = platformBinMap[__system];
-const __diroot = path.resolve(__filename, '..', '..');
-const __dirsrc = path.resolve(__diroot, 'compiler');
-const __dirbin = path.resolve(__dirsrc, 'bin');
+const __package = path.resolve(__filename, '..', '..');
+const __compiler = path.resolve(__package, 'compiler');
+const __bindir = path.resolve(__compiler, 'bin');
 if (!__binfile) { console.error(`Unsupported platform or architecture: ${__system}`); process.exit(1); }
 
 const soure_repo = "https://github.com/yshelldev/xcss-package"
-const packageJsonPath = path.join(__diroot, 'package.json');
+const packageJsonPath = path.join(__package, 'package.json');
 const packageData = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 const UpdateRootPackage = () => fs.writeFileSync(packageJsonPath, JSON.stringify(packageData, " ", "  "))
 let version = "";
 if (packageData.name === "xcss-package") {
     version = packageData["version"].split(".").slice(0, 2).join(".")
-    packageData["configs"]["compiler"] = version
+    packageData["compilerVersion"] = version
     UpdateRootPackage();
 } else {
-    version = packageData["configs"]["compiler"]
+    version = packageData["compilerVersion"]
 }
 const currentAssetUrl = `${soure_repo}/releases/download/v${version}/${__binfile}`;
 const latestAssetUrl = `${soure_repo}/releases/download/latest/${__binfile}`;
 
-const devMode = fs.existsSync(path.resolve(__dirsrc, "scripts"));
-const devPath = path.resolve(__dirsrc, "scripts", "live.sh");
-const binPath = path.resolve(__dirbin, __binfile);
+const devMode = fs.existsSync(path.resolve(__compiler, "scripts"));
+const devPath = path.resolve(__compiler, "scripts", "live.sh");
+const binPath = path.resolve(__bindir, __binfile);
 // console.log({ __filename, __dirname, __system, __binfile, assetUrl, binPath });
 
 function syncMarkdown() {
-    let readme = fs.readFileSync(path.resolve(__diroot, "execute", "index.md")).toString().trim();
-    readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__dirsrc, "README.md")).toString().trim();
-    readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__dirsrc, "FLAVOUR.md")).toString().trim();
-    fs.writeFileSync(path.resolve(__diroot, "README.md"), readme)
-}
-
-function downloadBinary(url, dests = []) {
-    console.log("Source: " + url);
-    return new Promise((resolve, reject) => {
-        let parsedUrl;
-        try {
-            parsedUrl = new URL(url);
-        } catch (err) {
-            reject(new Error("Invalid URL: " + url));
-            return;
-        }
-
-        https.get(parsedUrl, (res) => {
-            const { statusCode, headers } = res;
-            if ([301, 302, 307, 308].includes(statusCode) && headers.location) {
-                // Follow redirect
-                downloadBinary(headers.location, dests).then(resolve).catch(reject);
-                res.destroy();
-                return;
-            }
-
-            if (statusCode !== 200) {
-                res.resume(); // Consume response data to free up memory
-                reject(new Error(`Request Failed. Status Code: ${statusCode}`));
-                return;
-            }
-
-            const dataChunks = [];
-            res.on('error', reject);
-            res.on('data', chunk => dataChunks.push(chunk));
-            res.on('end', () => {
-                const buffer = Buffer.concat(dataChunks);
-                try {
-                    for (const dest of dests) {
-                        fs.writeFileSync(dest, buffer);
-                        if (process.platform !== 'win32') {
-                            fs.chmodSync(dest, 0o755);
-                        }
-                    }
-                    resolve();
-                } catch (err) {
-                    reject(err);
-                }
-            });
-        }).on('error', reject);
-    });
+    let readme = fs.readFileSync(path.resolve(__package, "execute", "index.md")).toString().trim();
+    readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__compiler, "README.md")).toString().trim();
+    readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__compiler, "FLAVOUR.md")).toString().trim();
+    fs.writeFileSync(path.resolve(__package, "README.md"), readme)
 }
 
 async function binUpgrade(args = []) {
     const fallbackAssetUrl = latestAssetUrl
     if (!fs.existsSync(binPath) || args[0] === "reinstall") {
         console.error('Reinstalling binary.');
-        if (!fs.existsSync(__dirbin)) {
-            fs.mkdirSync(__dirbin, { recursive: true });
+        if (!fs.existsSync(__bindir)) {
+            fs.mkdirSync(__bindir, { recursive: true });
         }
         try {
-            await downloadBinary(currentAssetUrl, [binPath]);
+            await DownloadBinary(currentAssetUrl, [binPath]);
         } catch (error) {
             console.error(`Failed to download from first URL: ${error.message}`);
             console.error('Trying second binary URL...');
             // Attempt to download from a fallback URL (assumed here as fallbackAssetUrl)
-            await downloadBinary(fallbackAssetUrl, [binPath]);
+            await DownloadBinary(fallbackAssetUrl, [binPath]);
         }
         if (process.platform !== 'win32') {
             fs.chmodSync(binPath, 0o755);
@@ -126,26 +80,23 @@ async function binUpgrade(args = []) {
     }
     if (!fs.existsSync(binPath) || args[0] === "upgrade") {
         console.error('Upgrading to latest binary.');
-        if (!fs.existsSync(__dirbin)) {
-            fs.mkdirSync(__dirbin, { recursive: true });
+        if (!fs.existsSync(__bindir)) {
+            fs.mkdirSync(__bindir, { recursive: true });
         }
-        await downloadBinary(latestAssetUrl, [binPath]);
+        await DownloadBinary(latestAssetUrl, [binPath]);
         if (process.platform !== 'win32') {
             fs.chmodSync(binPath, 0o755);
         }
     }
 }
 
-export function ScaffoldRedirect(key, absolutePath) {
-    packageData.config[key] = absolutePath;
-    UpdateRootPackage()
-}
-
-(async () => {
+export async function RunCommand(args = []) {
     try {
-        const args = process.argv.slice(2);
-        await binUpgrade();
-
+        args = args.length ? args : process.argv.slice(2);
+        await binUpgrade(args);
+        if (args.length === 2 && args[0] === "flavourize") {
+            FlavourModify(args[1])
+        }
         if (!fs.existsSync(binPath)) {
             console.error('Binary file not found after download.');
             process.exit(1);
@@ -161,7 +112,8 @@ export function ScaffoldRedirect(key, absolutePath) {
     } catch (err) {
         console.error(`Error: ${err.message}`);
     }
-})();
+}
+RunCommand();
 
 export function GetBinPath() {
     return devMode ? devPath : binPath;

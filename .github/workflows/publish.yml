@@ -19,6 +19,8 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -27,8 +29,8 @@ jobs:
       - run: npm run bundle
       - run: npm pkg fix
 
-      - name: Publish package to npm
-        working-directory: .
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.XCSS_NPM }}
+      # - name: Publish package to npm
+      #   working-directory: .
+      #   run: npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.XCSS_NPM }}
