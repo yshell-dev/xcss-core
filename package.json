@@ -5,7 +5,7 @@
   "main": "package.js",
   "exports": "./package.js",
   "typings": "package.d.ts",
-  "compiler-version": "0.0.2",
+  "compiler-version": "0.0",
   "bin": {
     "xcss": "./package.js",
     "xdev": "./compiler/scripts/live.sh"
