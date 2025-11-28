@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
-import { FlavourModify } from './flavour.js';
 import { TryDownloadingUrls } from './binary.js';
 
 const platformBinMap = {
