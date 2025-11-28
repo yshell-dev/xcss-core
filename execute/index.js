@@ -26,7 +26,7 @@ function normalizeArch(arch) {
 const __filename = fileURLToPath(import.meta.url);
 const __system = `${process.platform}-${normalizeArch(process.arch)}`;
 const __binfile = platformBinMap[__system];
-const __diroot = path.resolve(__filename, '..');
+const __diroot = path.resolve(__filename, '..', '..');
 const __dirsrc = path.resolve(__diroot, 'compiler');
 const __dirbin = path.resolve(__dirsrc, 'bin');
 if (!__binfile) { console.error(`Unsupported platform or architecture: ${__system}`); process.exit(1); }
@@ -34,13 +34,14 @@ if (!__binfile) { console.error(`Unsupported platform or architecture: ${__syste
 const soure_repo = "https://github.com/yshelldev/xcss-package"
 const packageJsonPath = path.join(__diroot, 'package.json');
 const packageData = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+const UpdateRootPackage = () => fs.writeFileSync(packageJsonPath, JSON.stringify(packageData, " ", "  "))
 let version = "";
 if (packageData.name === "xcss-package") {
     version = packageData["version"].split(".").slice(0, 2).join(".")
-    packageData["compiler"] = version
-    fs.writeFileSync(packageJsonPath, JSON.stringify(packageData, " ", "  "))
+    packageData["configs"]["compiler"] = version
+    UpdateRootPackage();
 } else {
-    version = packageData["compiler"]
+    version = packageData["configs"]["compiler"]
 }
 const currentAssetUrl = `${soure_repo}/releases/download/v${version}/${__binfile}`;
 const latestAssetUrl = `${soure_repo}/releases/download/latest/${__binfile}`;
@@ -51,7 +52,7 @@ const binPath = path.resolve(__dirbin, __binfile);
 // console.log({ __filename, __dirname, __system, __binfile, assetUrl, binPath });
 
 function syncMarkdown() {
-    let readme = fs.readFileSync(path.resolve(__diroot, "scaffold", "intro.md")).toString().trim();
+    let readme = fs.readFileSync(path.resolve(__diroot, "execute", "index.md")).toString().trim();
     readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__dirsrc, "README.md")).toString().trim();
     readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__dirsrc, "FLAVOUR.md")).toString().trim();
     fs.writeFileSync(path.resolve(__diroot, "README.md"), readme)
@@ -135,6 +136,11 @@ async function binUpgrade(args = []) {
     }
 }
 
+export function ScaffoldRedirect(key, absolutePath) {
+    packageData.config[key] = absolutePath;
+    UpdateRootPackage()
+}
+
 (async () => {
     try {
         const args = process.argv.slice(2);
@@ -157,6 +163,6 @@ async function binUpgrade(args = []) {
     }
 })();
 
-export default function getBinPath() {
+export function GetBinPath() {
     return devMode ? devPath : binPath;
 }

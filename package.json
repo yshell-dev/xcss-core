@@ -2,21 +2,30 @@
   "name": "xcss-package",
   "description": "A powerful CSS kernel for building customized, scalable, and high-performance frontend frameworks. Seamlessly blend the raw potential of CSS with the ease of pre-made utilities, managed by a core orchestrator that optimizes HTML and JavaScript performance for modern web applications.",
   "version": "0.0.3",
-  "main": "package.js",
-  "exports": "./package.js",
-  "typings": "package.d.ts",
-  "compiler": "0.0",
+  "main": "./execute/index.js",
+  "types": "./execute/index.d.ts",
+  "exports": "./execute/index.js",
+  "typings": "./execute/index.d.ts",
+  "configs": {
+    "compiler": "0.0",
+    "flavour": "",
+    "redirect": {
+      "blueprint": "",
+      "libraries": "",
+      "sandbox": ""
+    }
+  },
   "bin": {
-    "xcss": "./package.js",
+    "xcss": "./execute/index.js",
     "xdev": "./compiler/scripts/live.sh"
   },
   "scripts": {
-    "install": "chmod +x ./package.js && ./package.js",
+    "install": "chmod +x ./execute/index.js && ./execute/index.js",
     "profile": "go install github.com/moderato-app/live-pprof@latest && live-pprof",
     "lint": "cd source && golangci-lint run && cd ..",
     "build": "cd compiler && chmod +x ./scripts/build.sh && ./scripts/build.sh && cd ..",
     "stats": "chmod +x ./compiler/scripts/stats.sh && ./compiler/scripts/stats.sh compiler",
-    "bundle": "node package.js && npm pack --dry-run"
+    "bundle": "node ./execute/index.js && npm pack --dry-run"
   },
   "repository": {
     "type": "git",
