@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import fs from 'fs';
+import fs, { existsSync } from 'fs';
 import https from 'https';
 import path from 'path';
 
@@ -51,7 +51,7 @@ function Download(url, dests = []) {
     });
 }
 
-export async function TryDownloadingUrls(Destination, URLs=[]) {
+export async function TryDownloadingUrls(Destination, URLs = [], force = false) {
     if (!fs.existsSync(Destination)) {
         console.error('Reinstalling binary.');
         const dir = path.dirname(Destination)
@@ -60,6 +60,7 @@ export async function TryDownloadingUrls(Destination, URLs=[]) {
         }
 
         for (const url of URLs) {
+            if (!force && existsSync(Destination)) { break; }
             try {
                 console.error('\nAttempting Url: ' + url);
                 await Download(url, [Destination]);
