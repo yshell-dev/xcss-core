@@ -56,9 +56,9 @@ const DownloadUrls = [patchTagUrl, minorTagUrl, majorTagUrl, latestTagUrl]
 
 const devMode = fs.existsSync(path.resolve(__compiler, "scripts"));
 const devPath = path.resolve(__compiler, "scripts", "live.sh");
-const binPath = path.resolve(__bindir, __binfile);
+const binpath = path.resolve(__bindir, __binfile);
 
-fs.writeFileSync(path.join(__package, "BINPATH"), binPath)
+fs.writeFileSync(path.join(__package, "BINPATH"), binpath)
 function syncMarkdown() {
     let readme = fs.readFileSync(path.resolve(__package, "execute", "index.md")).toString().trim();
     readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__compiler, "README.md")).toString().trim();
@@ -93,7 +93,7 @@ function FlavourModify(rootPackageJson, flavour) {
                     case "sandbox":
                     case "blueprint":
                     case "libraries":
-                        path.resolve(flavourPath, flavourMeta[k])
+                        packageMeta[k] = path.resolve(flavourPath, flavourMeta[k])
                         break;
                     default:
                         packageMeta[k] = flavourMeta[k];
@@ -112,24 +112,25 @@ export async function RunCommand(args = []) {
     const bin = path.basename(process.argv[1]);
     args = args.length ? args : process.argv.slice(2);
     if (args[0] === "binpath") {
-        console.log(binPath)
+        console.log(binpath)
     } else {
         try {
             if (bin === "xpin" && args.length === 1) {
                 FlavourModify(packageData, args[0])
+                args = [args[0]]
             } else if (args.length === 2 && args[0] === "spin") {
                 FlavourModify(packageData, args[1])
             }
-            
-            await TryDownloadingUrls(binPath, DownloadUrls);
-            if (!fs.existsSync(binPath)) {
+
+            await TryDownloadingUrls(binpath, DownloadUrls);
+            if (!fs.existsSync(binpath)) {
                 console.error('Binary file not found after download.');
                 process.exit(1);
             }
 
-            const child = spawnSync(binPath, args, { stdio: 'inherit' });
+            const child = spawnSync(binpath, args, { stdio: 'inherit' });
 
-            if (child.error) { console.error(`Failed to execute ${__binfile} at ${binPath}: ${child.error.message}`); } 
+            if (child.error) { console.error(`Failed to execute ${__binfile} at ${binpath}: ${child.error.message}`); }
             else { syncMarkdown() }
         } catch (err) {
             console.error(`Error: ${err.message}`);
@@ -141,7 +142,7 @@ RunCommand();
 export function GetMetadata() {
     return {
         DevMode: devMode,
-        binPath: devMode ? devPath : binPath,
+        binPath: devMode ? devPath : binpath,
         PackageName: packageData.name
     };
 }
