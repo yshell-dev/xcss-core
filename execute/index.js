@@ -58,6 +58,7 @@ const devMode = fs.existsSync(path.resolve(__compiler, "scripts"));
 const devPath = path.resolve(__compiler, "scripts", "live.sh");
 const binPath = path.resolve(__bindir, __binfile);
 
+fs.writeFileSync(path.join(__package, "BINPATH"), binPath)
 function syncMarkdown() {
     let readme = fs.readFileSync(path.resolve(__package, "execute", "index.md")).toString().trim();
     readme += "\n\n---\n\n" + fs.readFileSync(path.resolve(__compiler, "README.md")).toString().trim();

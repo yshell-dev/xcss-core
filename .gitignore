@@ -2,3 +2,5 @@ bin/
 source/
 node_modules/
 package-lock.json
+
+BINARY

@@ -1009,9 +1009,90 @@ body[data-loading] .$class { ... }
 
 ---
 
-# XCSS Scaffold
+# XCSS Scaffold: Spin Your Flavor
 
-Use this scaffold template as a starting point for your customized CSS framework.
+**xcss-scaffold** is the default template bundled with **xcss-package**. No need to download it separately for your project.
+
+Use this repository as a template to create your own XCSS frameworks and flavors.
+
+## Navigation
+
+- [Installation](#installation)
+- [Create Flavour](#how-to-spin-your-flavour)
+
+## Installation
+
+### Prerequisites
+
+1. Install the core **xcss-package** via your preferred package manager:
+
+```sh
+  npm i xcss-package
+
+  yarn add xcss-package
+
+  pnpm add xcss-package
+```
+
+2. Verify `xcss` or `xpin` CLI is available (provided by the **xcss-package**). Check if any of them are available with your preffered package runner
+
+```sh
+  npx xcss
+  npx xpin
+
+  yarn dlx xcss
+  yarn dlx xpin
+
+  pnpm exec xcss
+  pnpm exec xpin
+```
+
+### Install Flavor
+
+Install the `xcss-scaffold` flavor:
+
+```sh
+  npm i xcss-scaffold
+
+  yarn add xcss-package
+
+  pnpm add xcss-package`
+```
+
+### Scaffold Project
+
+Spin flavour reference of **xcss-package** to **xcss-scaffold**:
+
+```sh
+  npx xpin xcss-scaffold
+  npx xcss spin xcss-scaffold
+
+  yarn dlx xpin xcss-scaffold
+  yarn dlx xcss spin xcss-scaffold
+
+  pnpm exec xpin xcss-scaffold
+  pnpm exec xcss spin xcss-scaffold
+```
+
+The command automatically updates references to the new flavor.
+
+### Initialize
+
+In an unconfigured project, run:
+```sh
+  npm i xcss init
+
+  yarn add xcss init
+
+  pnpm add xcss init
+```
+This sets up XCSS Setup directory and boilerplate.
+
+---
+
+# How to spin your Flavour?
+
+Use this scaffold template as a starting point for your customized CSS framework. Follow the following steps to updata
 
 ## Setup Steps
 
