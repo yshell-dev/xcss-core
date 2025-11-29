@@ -132,7 +132,7 @@ export async function RunCommand(args = []) {
     try {
         args = args.length ? args : process.argv.slice(2);
         await TryDownloadingUrls(binPath, DownloadUrls);
-        if (args.length === 2 && args[0] === "flavourize") {
+        if (args.length === 2 && args[0] === "spin") {
             FlavourModify(args[1])
         }
         if (!fs.existsSync(binPath)) {
