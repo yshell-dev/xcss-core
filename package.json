@@ -16,6 +16,7 @@
   },
   "bin": {
     "xcss": "./execute/index.js",
+    "xpin": "./execute/index.js",
     "xdev": "./compiler/scripts/live.sh"
   },
   "scripts": {

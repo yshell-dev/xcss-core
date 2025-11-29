@@ -65,7 +65,7 @@ function syncMarkdown() {
     fs.writeFileSync(path.resolve(__package, "README.md"), readme)
 }
 
-export function FlavourModify(flavour) {
+export function FlavourModify(rootPackageJson, flavour) {
     try {
         // Validate input silently
         if (!flavour || typeof flavour !== 'string') {
@@ -73,7 +73,8 @@ export function FlavourModify(flavour) {
         }
 
         // Build path
-        const flavourPackagePath = path.join(__package, '..', flavour, 'package.json');
+        const flavourPath = path.join(__package, '..', flavour);
+        const flavourPackagePath = path.join(flavourPath, 'package.json');
 
         // Check if file exists
         if (!fs.existsSync(flavourPackagePath)) {
@@ -97,11 +98,11 @@ export function FlavourModify(flavour) {
         }
 
         // Merge flavours safely
-        if (!packageData.flavour) {
-            packageData.flavour = {};
+        if (!rootPackageJson.flavour) {
+            rootPackageJson.flavour = {};
         }
 
-        const packageMeta = packageData.flavour;
+        const packageMeta = rootPackageJson.flavour;
         const flavourMeta = flavourData.configs;
 
         if (!(typeof packageMeta === "object" && typeof flavourMeta === "object")) {
@@ -110,7 +111,15 @@ export function FlavourModify(flavour) {
 
         Object.keys(packageMeta).forEach((k) => {
             if (typeof packageMeta[k] === typeof flavourMeta[k]) {
-                packageMeta[k] = flavourMeta[k];
+                switch (k) {
+                    case "sandbox":
+                    case "blueprint":
+                    case "libraries":
+                        path.resolve(flavourPath, flavourMeta[k])
+                        break;
+                    default:
+                        packageMeta[k] = flavourMeta[k];
+                }
             }
         })
 
@@ -130,10 +139,13 @@ export function FlavourModify(flavour) {
 
 export async function RunCommand(args = []) {
     try {
+        const bin = path.basename(process.argv[1]);
         args = args.length ? args : process.argv.slice(2);
         await TryDownloadingUrls(binPath, DownloadUrls);
-        if (args.length === 2 && args[0] === "spin") {
-            FlavourModify(args[1])
+        if (bin === "xpin" && args.length === 1) {
+            FlavourModify(packageData, args[0])
+        } else if (args.length === 2 && args[0] === "spin") {
+            FlavourModify(packageData, args[1])
         }
         if (!fs.existsSync(binPath)) {
             console.error('Binary file not found after download.');
