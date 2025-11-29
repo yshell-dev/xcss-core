@@ -66,43 +66,20 @@ function syncMarkdown() {
     fs.writeFileSync(path.resolve(__package, "README.md"), readme)
 }
 
-export function FlavourModify(rootPackageJson, flavour) {
+function FlavourModify(rootPackageJson, flavour) {
     try {
-        // Validate input silently
-        if (!flavour || typeof flavour !== 'string') {
-            return false;
-        }
+        if (!flavour || typeof flavour !== 'string') { return false; }
 
-        // Build path
         const flavourPath = path.join(__package, '..', flavour);
         const flavourPackagePath = path.join(flavourPath, 'package.json');
+        if (!fs.existsSync(flavourPackagePath)) { return false; }
 
-        // Check if file exists
-        if (!fs.existsSync(flavourPackagePath)) {
-            return false;
-        }
-
-        // Read file
         const data = fs.readFileSync(flavourPackagePath, 'utf8');
-
-        // Parse JSON silently
         let flavourData;
-        try {
-            flavourData = JSON.parse(data);
-        } catch {
-            return false;
-        }
+        try { flavourData = JSON.parse(data); } catch { return false; }
+        if (!flavourData.configs) { return false; }
 
-        // Validate flavour field
-        if (!flavourData.configs) {
-            return false;
-        }
-
-        // Merge flavours safely
-        if (!rootPackageJson.flavour) {
-            rootPackageJson.flavour = {};
-        }
-
+        if (!rootPackageJson.flavour) { rootPackageJson.flavour = {}; }
         const packageMeta = rootPackageJson.flavour;
         const flavourMeta = flavourData.configs;
 
@@ -124,15 +101,8 @@ export function FlavourModify(rootPackageJson, flavour) {
             }
         })
 
-        // Update package silently
-        try {
-            UpdateRootPackage();
-        } catch {
-            return false;
-        }
-
+        try { UpdateRootPackage(); } catch { return false; }
         return true;
-
     } catch {
         return false;
     }
@@ -166,6 +136,10 @@ export async function RunCommand(args = []) {
 }
 RunCommand();
 
-export function GetBinPath() {
-    return devMode ? devPath : binPath;
+export function GetMetadata() {
+    return { 
+        DevMode: devMode, 
+        binPath: devMode ? devPath : binPath,
+        PackageName: packageData.name
+    };
 }
