@@ -24,7 +24,7 @@ jobs:
 
       - name: Sync scaffold submodules only
         run: |
-          git submodule update --init --recursive ./scaffold
+          git submodule update --init ./scaffold
 
       - uses: actions/setup-node@v4
         with:
@@ -33,4 +33,4 @@ jobs:
 
       - run: npm run bundle
       - run: npm pkg fix
-      - run: npm publish --access public
+      - run: npm publish
