@@ -115,13 +115,13 @@ export async function RunCommand(args = []) {
         console.log(binPath)
     } else {
         try {
-            await TryDownloadingUrls(binPath, DownloadUrls);
-
             if (bin === "xpin" && args.length === 1) {
                 FlavourModify(packageData, args[0])
             } else if (args.length === 2 && args[0] === "spin") {
                 FlavourModify(packageData, args[1])
             }
+            
+            await TryDownloadingUrls(binPath, DownloadUrls);
             if (!fs.existsSync(binPath)) {
                 console.error('Binary file not found after download.');
                 process.exit(1);
@@ -129,11 +129,8 @@ export async function RunCommand(args = []) {
 
             const child = spawnSync(binPath, args, { stdio: 'inherit' });
 
-            if (child.error) {
-                console.error(`Failed to execute ${__binfile} at ${binPath}: ${child.error.message}`);
-            } else {
-                syncMarkdown()
-            }
+            if (child.error) { console.error(`Failed to execute ${__binfile} at ${binPath}: ${child.error.message}`); } 
+            else { syncMarkdown() }
         } catch (err) {
             console.error(`Error: ${err.message}`);
         }
