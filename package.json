@@ -20,13 +20,13 @@
     "xdev": "./compiler/scripts/live.sh"
   },
   "scripts": {
-    "install": "chmod +x ./execute/index.js && ./execute/index.js",
+    "sync": "./compiler/scripts/sync.sh",
+    "postinstall": "chmod +x ./execute/index.js && ./execute/index.js",
     "profile": "go install github.com/moderato-app/live-pprof@latest && live-pprof",
     "lint": "cd source && golangci-lint run && cd ..",
     "build": "cd compiler && chmod +x ./scripts/build.sh && ./scripts/build.sh && cd ..",
     "stats": "chmod +x ./compiler/scripts/stats.sh && ./compiler/scripts/stats.sh compiler",
-    "bundle": "node ./execute/index.js && npm pack --dry-run",
-    "publish": "./compiler/scripts/publ.sh"
+    "bundle": "node ./execute/index.js && npm pack --dry-run"
   },
   "repository": {
     "type": "git",
