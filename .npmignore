@@ -3,6 +3,6 @@
 .gitignore
 .gitmodules
 
-compiler/**/*
-
 BINPATH
+compiler/**/*
+execute/publish.sh
