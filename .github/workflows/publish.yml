@@ -24,13 +24,18 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
 
-      - run: npm install -g npm@latest
-      - run: git submodule update --init ./scaffold
-      - run: npm run bundle
+      - name: Initialize Directory
+        run: |
+          npm install -g npm@latest
+          git submodule update --init ./scaffold
+          npm run bundle
 
-      - run: cd scaffold
-      - run: npm publish
-      - run: cd ..
+      - name: Publish Scaffold
+        run: |
+          cd scaffold
+          npm publish
+          cd ..
       
-      - run: npm publish
+      - name: Publish Package
+        run: npm publish
 
