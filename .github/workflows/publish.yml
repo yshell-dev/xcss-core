@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     if: github.ref == 'refs/heads/main' &&
-      contains(github.event.head_commit.message, 'updated')
+      contains(github.event.head_commit.message, '#Release')
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
