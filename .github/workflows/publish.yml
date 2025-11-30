@@ -24,7 +24,13 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
 
-      - run: git submodule update --init ./scaffold
       - run: npm install -g npm@latest
+      - run: git submodule update --init ./scaffold
       - run: npm run bundle
+
+      - run: cd scaffold
       - run: npm publish
+      - run: cd ..
+      
+      - run: npm publish
+

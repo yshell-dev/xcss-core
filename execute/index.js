@@ -34,14 +34,21 @@ if (!__binfile) { console.error(`Unsupported platform or architecture: ${__syste
 
 const soure_repo = "https://github.com/yshelldev/xcss-package"
 const packageJsonPath = path.join(__package, 'package.json');
+const scaffoldJsonPath = path.join(__package, 'scaffold', 'package.json');
 const packageData = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-const UpdateRootPackage = () => fs.writeFileSync(packageJsonPath, JSON.stringify(packageData, " ", "  "))
+const scaffoldData = JSON.parse(fs.readFileSync(scaffoldJsonPath, 'utf8'));
+const UpdatePackageJson = () => fs.writeFileSync(packageJsonPath, JSON.stringify(packageData, " ", "  "))
+const UpdateScaffoldJson = () => fs.writeFileSync(scaffoldJsonPath, JSON.stringify(scaffoldData, " ", "  "))
 
 let version = "";
 if (packageData.name === "xcss-package") {
     version = packageData["version"]
     packageData["compilerVersion"] = version
-    UpdateRootPackage();
+    UpdatePackageJson();
+    
+    scaffoldData.version = version;
+    scaffoldData.configs.version = version;
+    UpdateScaffoldJson();
 } else { version = packageData["compilerVersion"] }
 
 const patchTag = version;
@@ -101,7 +108,7 @@ function FlavourModify(rootPackageJson, flavour) {
             }
         })
 
-        try { UpdateRootPackage(); } catch { return false; }
+        try { UpdatePackageJson(); } catch { return false; }
         return true;
     } catch {
         return false;
