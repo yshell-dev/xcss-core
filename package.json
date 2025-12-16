@@ -1,0 +1,44 @@
+{
+  "name": "xtatix",
+  "description": "Xtatix unifies HTML structure and CSS styling into a single declarative language. .",
+  "version": "0.0.0",
+  "compiler": "0.0.0",
+  "main": "./package.js",
+  "types": "./package.d.ts",
+  "exports": "./package.js",
+  "typings": "./package.d.ts",
+  "bin": {
+    "xtx": "./package.js",
+    "xtatix": "./package.js"
+  },
+  "scripts": {
+    "postinstall": "node ./package.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xtatixone/xtatix"
+  },
+  "keywords": [
+    "css",
+    "xtatix",
+    "styles",
+    "semantic",
+    "frontend",
+    "design"
+  ],
+  "author": {
+    "name": "Vyshnav Prasad",
+    "url": "https://github.com/yshelldev/"
+  },
+  "license": "Custom",
+  "licenseFile": "LICENSE.md",
+  "homepage": "https://www.xtatix.io",
+  "bugs": {
+    "url": "https://github.com/xtatixone/xtatix/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/yshelldev"
+  },
+  "type": "module"
+}

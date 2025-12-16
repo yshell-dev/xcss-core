@@ -1,0 +1,34 @@
+name: Publish to NPM
+
+on:
+  # push:
+    # branches: [main]
+  repository_dispatch:
+    types: [trigger-publish]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: production
+    # if: (github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '#Release')) || (github.event_name != 'push')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - name: Initialize Package
+        run: |
+          npm install -g npm@latest
+          git submodule update --init ./scaffold
+          npm run bundle
+
+      - name: Publish Package
+        run: npm publish
