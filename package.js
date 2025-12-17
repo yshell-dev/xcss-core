@@ -120,8 +120,8 @@ function ReadFlavourConfigs(flavourdir) {
     }
 }
 
-compilerData["name"] = packageData["name"];
-compilerData["version"] = packageData["version"];
+compilerData["name"] = packageData["name"] || "";
+compilerData["version"] = packageData["version"] || "";
 const defaultFlavour = ReadFlavourConfigs(__scaffold);
 if (typeof compilerData["flavour"] == "object") {
     compilerData["flavour"]["default"] = defaultFlavour;
@@ -221,7 +221,14 @@ export async function RunCommand(args = []) {
     } else {
         try {
             if (args[0] === "init" && args[1]) {
-                compilerData["flavour"]["workspace"][process.env.PWD] = ReadFlavourConfigs(path.join(__package, "..", args[1]));
+                const to_paclist = [__package];
+                (compilerData.name || "")
+                    .replaceAll("\\", "/")
+                    .split("/")
+                    .filter(Boolean)
+                    .forEach(() => to_paclist.push(".."));
+                to_paclist.push(args[1])
+                compilerData["flavour"]["workspace"][process.env.PWD] = ReadFlavourConfigs(path.join(...to_paclist));
                 UpdateCompilerConfig();
             }
 
