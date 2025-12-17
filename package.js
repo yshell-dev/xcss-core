@@ -245,6 +245,6 @@ export function GetMetadata() {
     return {
         DevMode: devMode,
         binPath: binpath,
-        PackageName: packageData.name
+        Package: packageData.name
     };
 }
