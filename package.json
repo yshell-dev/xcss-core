@@ -1,6 +1,6 @@
 {
   "name": "xtatix",
-  "description": "Xtatix unifies HTML structure and CSS styling into a single declarative language. .",
+  "description": "Xtatix unifies HTML structure and CSS styling into a single declarative language.",
   "version": "0.0.0",
   "compiler": "0.0.0",
   "main": "./package.js",
