@@ -116,8 +116,8 @@ function ReadFlavourConfigs(flavourdir) {
             fs.mkdirSync(path.dirname(libignore), { recursive: true });
             fs.writeFileSync(libignore, "_scaffold_")
         }
-        return resolved;
     }
+    return resolved;
 }
 
 compilerData["name"] = packageData["name"] || "";
@@ -131,7 +131,6 @@ if (typeof compilerData["flavour"] == "object") {
 if (typeof compilerData["flavour"]["workspace"] !== "object") {
     compilerData["flavour"]["workspace"] = {}
 }
-UpdateCompilerConfig();
 
 export async function RunCommand(args = []) {
     function Download(url, dests = []) {
@@ -220,18 +219,18 @@ export async function RunCommand(args = []) {
         console.log(binpath)
     } else {
         try {
+            const to_paclist = [__package];
+            (compilerData.name || "").replaceAll("\\", "/").split("/").filter(Boolean).forEach(() => to_paclist.push(".."));
+
             if (args[0] === "init" && args[1]) {
-                const to_paclist = [__package];
-                (compilerData.name || "")
-                    .replaceAll("\\", "/")
-                    .split("/")
-                    .filter(Boolean)
-                    .forEach(() => to_paclist.push(".."));
                 to_paclist.push(args[1])
                 compilerData["flavour"]["workspace"][process.env.PWD] = ReadFlavourConfigs(path.join(...to_paclist));
-                UpdateCompilerConfig();
+            } else if(args[0] === "deinit") {
+                delete compilerData["flavour"]["workspace"][process.env.PWD]
+                args[0] = "init"
             }
-
+            
+            UpdateCompilerConfig();
             await TryDownloadingUrls(binpath, DownloadUrls);
             if (!fs.existsSync(binpath)) {
                 console.error('Binary file not found after download attempts.');
