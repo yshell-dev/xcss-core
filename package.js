@@ -82,7 +82,7 @@ function ReadFlavourConfigs(flavourdir) {
     const resolved = {
         "name": "unflavored",
         "version": "unversioned",
-        "sandbox": "sandbox",
+        "sketchpad": "sketchpad",
         "blueprint": "blueprint",
         "libraries": "libraries"
     };
@@ -100,7 +100,7 @@ function ReadFlavourConfigs(flavourdir) {
         Object.keys(resolved).forEach((k) => {
             if (typeof resolved[k] === typeof configs[k]) {
                 switch (k) {
-                    case "sandbox":
+                    case "sketchpad":
                     case "blueprint":
                     case "libraries":
                         resolved[k] = path.resolve(flavourdir, configs[k])
@@ -225,11 +225,11 @@ export async function RunCommand(args = []) {
             if (args[0] === "init" && args[1]) {
                 to_paclist.push(args[1])
                 compilerData["flavour"]["workspace"][process.env.PWD] = ReadFlavourConfigs(path.join(...to_paclist));
-            } else if(args[0] === "deinit") {
+            } else if (args[0] === "deinit") {
                 delete compilerData["flavour"]["workspace"][process.env.PWD]
                 args[0] = "init"
             }
-            
+
             UpdateCompilerConfig();
             await TryDownloadingUrls(binpath, DownloadUrls);
             if (!fs.existsSync(binpath)) {

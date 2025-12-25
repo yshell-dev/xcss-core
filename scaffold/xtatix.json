@@ -1,7 +1,7 @@
 {
     "name": "scaffold",
     "version": "0.0.0",
-    "sandbox": "sandbox",
+    "sketchpad": "sketchpad",
     "blueprint": "blueprint",
     "libraries": "libraries"
 }
