@@ -90,7 +90,7 @@ function ReadFlavourConfigs(flavourdir) {
         "libraries": "libraries"
     };
     try {
-        const flavourAlchiraPath = path.join(flavourdir, 'alchira.json');
+        const flavourAlchiraPath = path.join(flavourdir, 'alconfig.json');
         const configs = { ...resolved };
         if (fs.existsSync(flavourAlchiraPath)) {
             const data = fs.readFileSync(flavourAlchiraPath, 'utf8');
