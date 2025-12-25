@@ -7,8 +7,8 @@ import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 
 // Repo for Bin download.
-const REPONAME = "xtatix";
-const REPOLINK = "https://github.com/xtatixone/" + REPONAME
+const REPONAME = "alchira";
+const REPOLINK = "https://github.com/alchira/" + REPONAME
 
 const platformBinMap = {
     'win32-386': 'windows-386.exe',
@@ -90,10 +90,10 @@ function ReadFlavourConfigs(flavourdir) {
         "libraries": "libraries"
     };
     try {
-        const flavourXtatixPath = path.join(flavourdir, 'xtatix.json');
+        const flavourAlchiraPath = path.join(flavourdir, 'alchira.json');
         const configs = { ...resolved };
-        if (fs.existsSync(flavourXtatixPath)) {
-            const data = fs.readFileSync(flavourXtatixPath, 'utf8');
+        if (fs.existsSync(flavourAlchiraPath)) {
+            const data = fs.readFileSync(flavourAlchiraPath, 'utf8');
             try {
                 const flavourData = JSON.parse(data);
                 Object.assign(configs, flavourData)

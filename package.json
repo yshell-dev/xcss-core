@@ -1,6 +1,6 @@
 {
-  "name": "xtatix",
-  "description": "Xtatix unifies HTML structure and CSS styling into a single declarative language.",
+  "name": "alchira",
+  "description": "Alchira unifies HTML structure and CSS styling into a single declarative language.",
   "version": "0.0.0",
   "compiler": "0.0.0",
   "main": "./package.js",
@@ -8,19 +8,19 @@
   "exports": "./package.js",
   "typings": "./package.d.ts",
   "bin": {
-    "xtx": "./package.js",
-    "xtatix": "./package.js"
+    "al": "./package.js",
+    "alchira": "./package.js"
   },
   "scripts": {
     "postinstall": "node ./package.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/xtatixone/xtatix"
+    "url": "https://github.com/alchira/package"
   },
   "keywords": [
     "css",
-    "xtatix",
+    "alchira",
     "styles",
     "semantic",
     "frontend",
@@ -32,9 +32,9 @@
   },
   "license": "Custom",
   "licenseFile": "LICENSE.md",
-  "homepage": "https://www.xtatix.io",
+  "homepage": "https://www.alchira.io",
   "bugs": {
-    "url": "https://github.com/xtatixone/xtatix/issues"
+    "url": "https://github.com/alchira/package/issues"
   },
   "funding": {
     "type": "github",
