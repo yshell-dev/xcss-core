@@ -90,14 +90,22 @@ function ReadFlavourConfigs(flavourdir) {
         "libraries": "libraries"
     };
     try {
-        const flavourAlchiraPath = path.join(flavourdir, 'alconfig.json');
+        const PackagePath = path.join(flavourdir, 'package.json');
         const configs = { ...resolved };
-        if (fs.existsSync(flavourAlchiraPath)) {
-            const data = fs.readFileSync(flavourAlchiraPath, 'utf8');
+        if (fs.existsSync(PackagePath)) {
+            const data = fs.readFileSync(PackagePath, 'utf8');
             try {
                 const flavourData = JSON.parse(data);
-                Object.assign(configs, flavourData)
-            } catch { }
+                // Only graft the specific DNA strand we need
+                if (flavourData.alconfig && typeof flavourData.alconfig === "object") {
+                    Object.assign(configs, flavourData.alconfig);
+                } else {
+                    throw new Error("Missing 'alconfig' strand in DNA.");
+                }
+            } catch (err) {
+                // A more descriptive error for Alfred
+                console.error(`[ALCHIRA ERROR]: Fusion failed in ${flavourdir}. Instructions are unreadable.`);
+            }
         }
 
         Object.keys(resolved).forEach((k) => {
