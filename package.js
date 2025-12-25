@@ -44,12 +44,15 @@ const packageData = fs.existsSync(packageJsonPath) ? JSON.parse(fs.readFileSync(
 const compilerData = fs.existsSync(compilerConfigPath) ? JSON.parse(fs.readFileSync(compilerConfigPath, 'utf8')) : {};
 
 const devMode = fs.existsSync(path.resolve(__package, ".gitignore"));
+let binpath = path.resolve(__binarydir, __binfile);
+if (devMode) {
+    if (fs.existsSync(path.resolve(__package, ".git"))) {
+        binpath = path.resolve(__package, "../source/scripts/live.sh");
+    } else {
+        binpath = path.resolve(__package, "../../source/scripts/live.sh");
+    }
+}
 fs.mkdirSync(__binarydir, { recursive: true })
-const binpath = devMode ? (
-    fs.existsSync(path.resolve(__package, ".git")) ?
-        path.resolve(__package, "../source/scripts/live.sh") :
-        fs.readFileSync(path.join(__binarydir, "abspath.txt"), 'utf8').toString()
-) : path.resolve(__binarydir, __binfile);
 fs.writeFileSync(path.join(__binarydir, "abspath.txt"), binpath);
 
 function savejson(dst, obj) {
