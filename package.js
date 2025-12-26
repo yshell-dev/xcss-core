@@ -103,7 +103,6 @@ function ReadFlavourConfigs(flavourdir) {
                     throw new Error("Missing 'alconfig' strand in DNA.");
                 }
             } catch (err) {
-                // A more descriptive error for Alfred
                 console.error(`[ALCHIRA ERROR]: Fusion failed in ${flavourdir}. Instructions are unreadable.`);
             }
         }
