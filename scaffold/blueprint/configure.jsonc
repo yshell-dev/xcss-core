@@ -1,8 +1,8 @@
 {
   "proxymap": [
     {
-      "source": "xrc",
-      "target": "src",
+      "source": "source",
+      "target": "target",
       "stylesheet": "styles.css",
       "extensions": {
         "html": {
