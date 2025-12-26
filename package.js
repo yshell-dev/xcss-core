@@ -124,7 +124,7 @@ function ReadFlavourConfigs(flavourdir) {
         const libignore = path.join(resolved.blueprint, "libraries", ".gitignore")
         if (fs.existsSync(flavourdir) && !fs.existsSync(libignore)) {
             fs.mkdirSync(path.dirname(libignore), { recursive: true });
-            fs.writeFileSync(libignore, "_scaffold_")
+            fs.writeFileSync(libignore, "_")
         }
     }
     return resolved;
