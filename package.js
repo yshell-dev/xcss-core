@@ -66,10 +66,10 @@ const UpdateCompilerConfig = () => savejson(compilerConfigPath, compilerData)
 
 let version = "";
 if (packageData.name === REPONAME) {
-    version = packageData["version"]
-    packageData["compiler"] = version
+    version = packageData["alversion"]
+    packageData["alversion"] = version
     UpdatePackageJson();
-} else { version = packageData["compiler"] }
+} else { version = packageData["alchira-version"] }
 
 const patchTag = version;
 const minorTag = version.split(".").slice(0, 2).join(".");

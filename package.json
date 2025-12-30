@@ -1,8 +1,8 @@
 {
   "name": "alchira",
   "description": "Alchira unifies HTML structure and CSS styling into a single declarative language.",
-  "version": "0.0.0",
-  "compiler": "0.0.0",
+  "version": "0.0.1",
+  "alversion": "0.0.1",
   "main": "./package.js",
   "types": "./package.d.ts",
   "exports": "./package.js",

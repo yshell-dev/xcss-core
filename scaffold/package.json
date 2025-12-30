@@ -1,7 +1,7 @@
 {
   "alconfig": {
     "name": "minimal",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "sketchpad": "sketchpad",
     "blueprint": "blueprint",
     "libraries": "libraries"
