@@ -557,7 +557,9 @@ Using this escaping keeps hashes valid across different contexts whether in HTML
 - Use shortcuts like `Ctrl + Alt + Shift + X` to view the processed output of your source file with hashes applied.
 
 This method ensures consistency and correctness when importing and using unique identifiers across your project files.
-# 2.0 Class Loaders
+EX---
+title: 2.0 Class Loaders
+---
 
 > - Use sketchpad for preview. Cursor on symlink and trigger. [ `ctrl` + `alt` + `x` ]  
 > - Start live compilation using `alchira preview -w` or `alchira debug -w`.  
@@ -823,7 +825,7 @@ demo$varient-preview="+ d-flex flex-column gap-8;"
 			}
 		}
 	"
-	x-preset-1><span> Grouped with Denest-Op </span></button>
+	x-preset-1><span> Grouped with Denest-Op fhgfdfv </span></button>
 	<!-- While composing symlink in this manner, all variables are detected, and autosuggests them. -->
 
 	<!-- For runtime dynamic styling update the variable using style attribute. -->
